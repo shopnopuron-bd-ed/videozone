@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VideoZone - ভিডিও স্ট্রিমিং</title>
+    <title>VideoZone - প্রোফেশনাল ভিডিও স্ট্রিমিং</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,9 +12,9 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#0f172a',
-                        cardBg: '#1e293b',
-                        accent: '#3b82f6'
+                        darkBg: '#0b0f19',
+                        cardBg: '#131d31',
+                        accent: '#2563eb'
                     }
                 }
             }
@@ -23,211 +23,249 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col font-sans">
+<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col font-sans selection:bg-accent selection:text-white">
 
     <!-- Header / Navigation -->
-    <header class="bg-cardBg border-b border-slate-800 sticky top-0 z-50 shadow-md">
+    <header class="bg-cardBg border-b border-slate-800/80 sticky top-0 z-40 shadow-lg backdrop-blur-md bg-opacity-90">
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-2 text-xl font-bold text-accent">
-                <i class="fa-solid fa-play-circle text-2xl"></i>
-                <span>VideoZone</span>
+            <a href="index.html" class="flex items-center space-x-2 text-xl font-black text-accent tracking-wide">
+                <i class="fa-solid fa-play-circle text-2xl text-blue-500"></i>
+                <span class="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">VideoZone</span>
             </a>
             <div class="flex items-center space-x-3">
-                <button onclick="openAdminLogin()" class="bg-slate-700 hover:bg-slate-600 text-xs px-3 py-1.5 rounded-lg transition font-medium flex items-center space-x-1">
-                    <i class="fa-solid fa-lock"></i>
+                <!-- Hidden/Secret Admin Trigger Button -->
+                <button onclick="openAdminLogin()" class="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-xs px-3 py-1.5 rounded-lg transition font-medium flex items-center space-x-1.5 border border-slate-700/50">
+                    <i class="fa-solid fa-shield-halved text-accent"></i>
                     <span>Admin</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Dynamic Adsterra Top Banner Slot -->
-    <div id="dynamicTopBannerAd" class="max-w-7xl mx-auto px-4 mt-4 flex justify-center"></div>
+    <!-- Ad Slot 1: Top Banner (728x90 or Responsive) -->
+    <div id="slotTopBanner" class="max-w-7xl mx-auto px-4 mt-4 flex justify-center overflow-hidden"></div>
 
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full space-y-8">
         
-        <!-- Search & Dynamic Category Filters (Right-to-Left) -->
+        <!-- Search & Dynamic Category Filters (Right-to-Left / Modern scroll) -->
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
             <!-- Search Box -->
             <div class="relative w-full md:w-80">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                    <i class="fa-solid fa-search"></i>
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
                 </span>
-                <input type="text" id="searchInput" placeholder="ভিডিও খুঁজুন (নাম বা কাছাকাছি শব্দ)..." 
-                    class="w-full bg-cardBg border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-accent">
+                <input type="text" id="searchInput" placeholder="ভিডিও খুঁজুন..." 
+                    class="w-full bg-cardBg border border-slate-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-accent shadow-inner transition">
             </div>
 
-            <!-- Category Filter Buttons (Dynamic & Right-to-Left) -->
-            <div class="flex items-center space-x-2 space-x-reverse overflow-x-auto w-full md:w-auto pb-2 md:pb-0 justify-end" id="categoryFilters">
+            <!-- Category Filter Buttons (Dynamic RTL Scroll) -->
+            <div class="flex items-center space-x-2 space-x-reverse overflow-x-auto w-full md:w-auto pb-2 md:pb-0 justify-start md:justify-end scrollbar-thin" id="categoryFilters">
                 <!-- Rendered dynamically -->
             </div>
         </div>
 
-        <!-- Featured Section (2 Columns) -->
+        <!-- Ad Slot 2: Native Banner / 300x250 -->
+        <div id="slotNativeBanner" class="flex justify-center my-2"></div>
+
+        <!-- Featured Section -->
         <section id="featuredSection" class="space-y-4">
-            <h2 class="text-lg font-bold flex items-center space-x-2 text-amber-400">
+            <h2 class="text-base sm:text-lg font-bold flex items-center space-x-2 text-amber-400">
                 <i class="fa-solid fa-star"></i>
-                <span>Featured ভিডিও</span>
+                <span>ফিচারড ভিডিও</span>
             </h2>
-            <div id="featuredContainer" class="grid grid-cols-2 gap-3 sm:gap-4"></div>
+            <div id="featuredContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4"></div>
         </section>
 
-        <!-- Adsterra Inline / Native Ad Slot -->
-        <div id="dynamicInlineAd" class="flex justify-center my-4"></div>
-
-        <!-- Trending Section (2 Columns) -->
+        <!-- Trending Section -->
         <section id="trendingSection" class="space-y-4">
-            <h2 class="text-lg font-bold flex items-center space-x-2 text-rose-400">
+            <h2 class="text-base sm:text-lg font-bold flex items-center space-x-2 text-rose-400">
                 <i class="fa-solid fa-fire"></i>
-                <span>Trending ভিডিও</span>
+                <span>ট্রেন্ডিং ভিডিও</span>
             </h2>
-            <div id="trendingContainer" class="grid grid-cols-2 gap-3 sm:gap-4"></div>
+            <div id="trendingContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4"></div>
         </section>
 
-        <!-- All Videos Grid (2 Columns) -->
+        <!-- All Videos Grid -->
         <section class="space-y-4">
-            <h2 class="text-lg font-bold flex items-center space-x-2 text-blue-400">
+            <h2 class="text-base sm:text-lg font-bold flex items-center space-x-2 text-blue-400">
                 <i class="fa-solid fa-video"></i>
-                <span>সব ভিডিও</span>
+                <span>সকল ভিডিও</span>
             </h2>
-            <div id="videoContainer" class="grid grid-cols-2 gap-3 sm:gap-4"></div>
+            <div id="videoContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4"></div>
             <!-- Empty State -->
-            <div id="emptyState" class="hidden text-center py-12 space-y-3">
-                <i class="fa-solid fa-film text-4xl text-slate-600"></i>
-                <p class="text-slate-400 text-sm">কোনো ভিডিও পাওয়া যায়নি!</p>
+            <div id="emptyState" class="hidden text-center py-16 space-y-3 bg-cardBg/50 rounded-2xl border border-slate-800">
+                <i class="fa-solid fa-film text-5xl text-slate-600 animate-bounce"></i>
+                <p class="text-slate-400 text-sm font-medium">দুঃখিত, কোনো ভিডিও পাওয়া যায়নি!</p>
             </div>
         </section>
     </main>
 
+    <!-- Ad Slot 3: Social Bar Container -->
+    <div id="slotSocialBar"></div>
+
     <!-- Admin Modal / Panel (Secured by Email: alsamimhossain83@gmail.com) -->
-    <div id="adminModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-cardBg border border-slate-700 rounded-2xl max-w-2xl w-full p-6 space-y-6 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b border-slate-700 pb-4">
-                <h3 id="adminModalTitle" class="text-lg font-bold">অ্যাডমিন প্যানেল</h3>
-                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <div id="adminModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-cardBg border border-slate-700/80 rounded-2xl max-w-3xl w-full p-6 space-y-6 max-h-[92vh] overflow-y-auto shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-700/80 pb-4">
+                <h3 class="text-base font-bold flex items-center space-x-2 text-accent">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>প্রোফেশনাল অ্যাডমিন কন্ট্রোল প্যানেল</span>
+                </h3>
+                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white p-1 rounded-lg transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
 
             <!-- Login View -->
-            <div id="adminLoginView" class="space-y-4">
-                <p class="text-sm text-slate-400">অ্যাডমিন প্যানেলে প্রবেশ করতে আপনার জিমেইল অ্যাকাউন্ট দিন (নির্ধারিত জিমেইল: <code class="text-accent">alsamimhossain83@gmail.com</code>)</p>
-                <input type="email" id="adminEmailInput" placeholder="আপনার জিমেইল লিখুন" class="w-full bg-darkBg border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
-                <input type="password" id="adminPasswordInput" placeholder="পাসওয়ার্ড দিন (admin123)" class="w-full bg-darkBg border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
-                <button onclick="verifyAdminLogin()" class="w-full bg-accent hover:bg-blue-600 py-2.5 rounded-xl font-medium text-sm transition">লগইন করুন</button>
+            <div id="adminLoginView" class="space-y-4 py-4">
+                <div class="bg-darkBg p-4 rounded-xl border border-slate-800 space-y-2">
+                    <p class="text-xs text-slate-300">নিরাপত্তার জন্য আপনার অনুমোদিত জিমেইল ও পাসওয়ার্ড প্রদান করুন:</p>
+                    <p class="text-[11px] text-accent font-mono">அdmin Email: alsamimhossain83@gmail.com</p>
+                </div>
+                <input type="email" id="adminEmailInput" placeholder="আপনার জিমেইল লিখুন" class="w-full bg-darkBg border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent">
+                <input type="password" id="adminPasswordInput" placeholder="পাসওয়ার্ড দিন (admin123)" class="w-full bg-darkBg border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent">
+                <button onclick="verifyAdminLogin()" class="w-full bg-accent hover:bg-blue-600 py-3 rounded-xl font-bold text-sm transition shadow-lg shadow-blue-600/30">লগইন করুন</button>
             </div>
 
             <!-- Dashboard View -->
             <div id="adminDashboardView" class="hidden space-y-6">
-                <div class="flex justify-between items-center bg-darkBg p-4 rounded-xl border border-slate-700">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-darkBg p-4 rounded-xl border border-slate-700/80 gap-3">
                     <div>
                         <h4 class="font-bold text-sm text-accent">স্বাগতম, সামিম হোসাইন</h4>
-                        <p class="text-xs text-slate-400">ভিডিও, ক্যাটাগরি ও অ্যাডস ম্যানেজ করুন।</p>
+                        <p class="text-xs text-slate-400">অ্যাডস্টাররা অ্যাডস, ক্যাটাগরি ও ভিডিও ম্যানেজমেন্ট।</p>
                     </div>
-                    <button onclick="adminLogout()" class="bg-rose-600/20 text-rose-400 hover:bg-rose-600/30 px-3 py-1.5 rounded-lg text-xs transition">লগআউট</button>
+                    <button onclick="adminLogout()" class="bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 px-3 py-1.5 rounded-lg text-xs transition font-medium">লগআউট</button>
                 </div>
 
-                <!-- Tabs for Management -->
+                <!-- Tabs Navigation -->
                 <div class="flex space-x-2 border-b border-slate-700 pb-3 overflow-x-auto">
-                    <button onclick="switchTab('videos')" id="tabVideosBtn" class="bg-accent text-white px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap">ভিডিও ম্যানেজমেন্ট</button>
-                    <button onclick="switchTab('categories')" id="tabCategoriesBtn" class="bg-darkBg text-slate-300 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap">ক্যাটাগরি ম্যানেজমেন্ট</button>
-                    <button onclick="switchTab('ads')" id="tabAdsBtn" class="bg-darkBg text-slate-300 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap">অ্যাডস ম্যানেজার</button>
+                    <button onclick="switchTab('videos')" id="tabVideosBtn" class="bg-accent text-white px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap shadow">ভিডিও ম্যানেজমেন্ট</button>
+                    <button onclick="switchTab('categories')" id="tabCategoriesBtn" class="bg-darkBg text-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap hover:bg-slate-800">ক্যাটাগরি ও রিনেম</button>
+                    <button onclick="switchTab('ads')" id="tabAdsBtn" class="bg-darkBg text-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap hover:bg-slate-800">৬ ধরনের অ্যাড ম্যানেজার</button>
                 </div>
 
-                <!-- Categories Manager Tab -->
-                <div id="categoriesManagerSection" class="hidden space-y-4 bg-darkBg p-4 rounded-xl border border-slate-700">
+                <!-- 1. Categories Manager Tab -->
+                <div id="categoriesManagerSection" class="hidden space-y-4 bg-darkBg p-4 rounded-xl border border-slate-700/80">
                     <h4 class="font-bold text-sm text-slate-200">নতুন ক্যাটাগরি যোগ করুন</h4>
                     <div class="flex space-x-2">
-                        <input type="text" id="newCategoryInput" placeholder="ক্যাটাগরির নাম (যেমন: Movie, Tutorial)" class="flex-1 bg-cardBg border border-slate-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-accent">
-                        <button onclick="addNewCategory()" class="bg-accent hover:bg-blue-600 px-4 py-2 rounded-lg text-xs font-medium transition">যোগ করুন</button>
+                        <input type="text" id="newCategoryInput" placeholder="ক্যাটাগরির নাম (যেমন: movie, study)" class="flex-1 bg-cardBg border border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-accent">
+                        <button onclick="addNewCategory()" class="bg-accent hover:bg-blue-600 px-4 py-2 rounded-xl text-xs font-bold transition">যোগ করুন</button>
                     </div>
                     <div class="space-y-2 pt-2">
-                        <h5 class="text-xs font-bold text-slate-400">বিদ্যমান ক্যাটাগরি তালিকা:</h5>
-                        <div id="adminCategoryList" class="space-y-2 max-h-40 overflow-y-auto"></div>
+                        <h5 class="text-xs font-bold text-slate-400">বিদ্যমান ক্যাটাগরি তালিকা ও রিনেম করুন:</h5>
+                        <div id="adminCategoryList" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
                     </div>
                 </div>
 
-                <!-- Ads Manager Tab -->
-                <div id="adsManagerSection" class="hidden space-y-4 bg-darkBg p-4 rounded-xl border border-slate-700">
-                    <h4 class="font-bold text-sm text-slate-200">Adsterra Ad Units কনফিগারেশন</h4>
-                    <div class="space-y-1">
-                        <label class="text-xs text-slate-400">Top Banner Ad (728x90 বা 320x50)</label>
-                        <textarea id="adTopBanner" rows="2" placeholder="কোড পেস্ট করুন..." class="w-full bg-cardBg border border-slate-700 rounded-lg p-2 text-xs font-mono"></textarea>
+                <!-- 2. Ads Manager Tab (6 Ad Formats) -->
+                <div id="adsManagerSection" class="hidden space-y-4 bg-darkBg p-4 rounded-xl border border-slate-700/80">
+                    <div class="bg-blue-600/10 border border-blue-500/30 p-3 rounded-lg text-xs text-blue-300">
+                        <i class="fa-solid fa-circle-info mr-1"></i> Adsterra থেকে আপনার ৫ বা ৬ ধরনের অ্যাড কোড এখানে বসান। নিচে প্রতিটি স্লটের নির্দেশনা দেওয়া হলো।
                     </div>
+
                     <div class="space-y-1">
-                        <label class="text-xs text-slate-400">Inline / Native Banner Ad</label>
-                        <textarea id="adInline" rows="2" placeholder="কোড পেস্ট করুন..." class="w-full bg-cardBg border border-slate-700 rounded-lg p-2 text-xs font-mono"></textarea>
+                        <label class="text-xs font-semibold text-slate-300">১. Popunder Script (ব্যাকগ্রাউন্ড পপআপ অ্যাড)</label>
+                        <textarea id="adPopunder" rows="2" placeholder="Popunder কোড এখানে পেস্ট করুন..." class="w-full bg-cardBg border border-slate-700 rounded-lg p-2.5 text-xs font-mono"></textarea>
                     </div>
+
                     <div class="space-y-1">
-                        <label class="text-xs text-slate-400">Popunder / Social Bar স্ক্রিপ্ট</label>
-                        <textarea id="adPopunder" rows="2" placeholder="কোড পেস্ট করুন..." class="w-full bg-cardBg border border-slate-700 rounded-lg p-2 text-xs font-mono"></textarea>
+                        <label class="text-xs font-semibold text-slate-300">২. Social Bar Script (ভাসমান সোশ্যাল বার)</label>
+                        <textarea id="adSocialBar" rows="2" placeholder="Social Bar কোড এখানে পেস্ট করুন..." class="w-full bg-cardBg border border-slate-700 rounded-lg p-2.5 text-xs font-mono"></textarea>
                     </div>
-                    <button onclick="saveAdUnits()" class="bg-accent hover:bg-blue-600 px-4 py-2 rounded-lg text-xs font-medium transition">বিজ্ঞাপন কোড সংরক্ষণ করুন</button>
+
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-slate-300">৩. Native Banner / In-Page Push</label>
+                        <textarea id="adNative" rows="2" placeholder="Native Banner কোড এখানে পেস্ট করুন..." class="w-full bg-cardBg border border-slate-700 rounded-lg p-2.5 text-xs font-mono"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-semibold text-slate-300">৪. Top Banner (728x90)</label>
+                            <textarea id="adBanner728" rows="2" placeholder="728x90 কোড..." class="w-full bg-cardBg border border-slate-700 rounded-lg p-2 text-[11px] font-mono"></textarea>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-semibold text-slate-300">৫. Mobile Banner (320x50)</label>
+                            <textarea id="adBanner320" rows="2" placeholder="320x50 কোড..." class="w-full bg-cardBg border border-slate-700 rounded-lg p-2 text-[11px] font-mono"></textarea>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-semibold text-slate-300">৬. Rectangle (300x250)</label>
+                            <textarea id="adBanner300" rows="2" placeholder="300x250 কোড..." class="w-full bg-cardBg border border-slate-700 rounded-lg p-2 text-[11px] font-mono"></textarea>
+                        </div>
+                    </div>
+
+                    <button onclick="saveAllAdUnits()" class="w-full bg-accent hover:bg-blue-600 py-2.5 rounded-xl text-xs font-bold transition shadow">সকল বিজ্ঞাপন কোড সংরক্ষণ করুন</button>
                 </div>
 
-                <!-- Add/Edit Video Form -->
-                <div id="videoManagerSection" class="space-y-4">
-                    <form id="videoForm" onsubmit="handleVideoSubmit(event)" class="space-y-4 bg-darkBg p-4 rounded-xl border border-slate-700">
+                <!-- 3. Video Manager Tab (Single & Bulk upload) -->
+                <div id="videoManagerSection" class="space-y-6">
+                    <form id="videoForm" onsubmit="handleVideoSubmit(event)" class="space-y-4 bg-darkBg p-4 rounded-xl border border-slate-700/80">
                         <input type="hidden" id="editVideoId">
-                        <h4 id="formTitleText" class="font-bold text-sm text-slate-200">নতুন ভিডিও যোগ করুন</h4>
+                        <h4 id="formTitleText" class="font-bold text-sm text-slate-200">নতুন ভিডিও যোগ করুন (একক বা একাধিক)</h4>
                         
                         <div class="space-y-1">
-                            <label class="text-xs text-slate-400">ভিডিও শিরোনাম *</label>
-                            <input type="text" id="vTitle" required class="w-full bg-cardBg border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent">
+                            <label class="text-xs text-slate-400">ভিডিও শিরোনাম * (একাধিক যোগ করতে কমা ব্যবহার করতে পারেন বা নিচের বাল্ক বক্স)</label>
+                            <input type="text" id="vTitle" required class="w-full bg-cardBg border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent">
                         </div>
 
                         <div class="space-y-1">
                             <label class="text-xs text-slate-400">বিবরণ</label>
-                            <textarea id="vDesc" rows="2" class="w-full bg-cardBg border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent"></textarea>
+                            <textarea id="vDesc" rows="2" class="w-full bg-cardBg border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent"></textarea>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="space-y-1">
-                                <label class="text-xs text-slate-400">ক্যাটাগরি নির্বাচন করুন *</label>
-                                <select id="vCategorySelect" class="w-full bg-cardBg border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent">
+                                <label class="text-xs text-slate-400">ক্যাটাগরি নির্বাচন *</label>
+                                <select id="vCategorySelect" class="w-full bg-cardBg border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent capitalize">
                                     <!-- Dynamic options -->
                                 </select>
                             </div>
                             <div class="space-y-1">
                                 <label class="text-xs text-slate-400">থাম্বনেইল ইমেজ URL</label>
-                                <input type="text" id="vThumbnail" placeholder="https://..." class="w-full bg-cardBg border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent">
+                                <input type="text" id="vThumbnail" placeholder="https://..." class="w-full bg-cardBg border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="space-y-1">
                                 <label class="text-xs text-slate-400">Google Drive File ID</label>
-                                <input type="text" id="vDriveId" placeholder="উদাহরণ: 1B2M2Y8AsgT..." class="w-full bg-cardBg border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent">
+                                <input type="text" id="vDriveId" placeholder="উদাহরণ: 1B2M2Y8AsgT..." class="w-full bg-cardBg border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent">
                             </div>
                             <div class="space-y-1">
                                 <label class="text-xs text-slate-400">অথবা সরাসরি ভিডিও URL (MP4)</label>
-                                <input type="text" id="vUrl" placeholder="https://example.com/video.mp4" class="w-full bg-cardBg border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent">
+                                <input type="text" id="vUrl" placeholder="https://..." class="w-full bg-cardBg border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent">
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap gap-4 pt-2">
+                        <div class="flex flex-wrap gap-4 pt-1">
                             <label class="flex items-center space-x-2 text-xs text-slate-300 cursor-pointer">
                                 <input type="checkbox" id="vFeatured" class="rounded bg-cardBg border-slate-700 text-accent focus:ring-0">
-                                <span>Featured হিসেবে দেখান</span>
+                                <span>Featured ভিডিও হিসেবে দেখান</span>
                             </label>
                             <label class="flex items-center space-x-2 text-xs text-slate-300 cursor-pointer">
                                 <input type="checkbox" id="vTrending" class="rounded bg-cardBg border-slate-700 text-accent focus:ring-0">
-                                <span>Trending হিসেবে দেখান</span>
+                                <span>Trending ভিডিও হিসেবে দেখান</span>
                             </label>
                         </div>
 
                         <div class="flex space-x-3 pt-2">
-                            <button type="submit" class="flex-1 bg-accent hover:bg-blue-600 py-2 rounded-lg text-sm font-medium transition">সংরক্ষণ করুন</button>
-                            <button type="button" onclick="resetVideoForm()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm transition">ক্যান্সেল</button>
+                            <button type="submit" class="flex-1 bg-accent hover:bg-blue-600 py-2.5 rounded-xl text-sm font-bold transition shadow">সংরক্ষণ করুন</button>
+                            <button type="button" onclick="resetVideoForm()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2.5 rounded-xl text-sm transition">বাতিল</button>
                         </div>
                     </form>
 
+                    <!-- Bulk Import Section -->
+                    <div class="bg-darkBg p-4 rounded-xl border border-slate-700/80 space-y-3">
+                        <h4 class="font-bold text-xs text-slate-200">অথবা একসাথে একাধিক (Bulk) ভিডিও JSON ফরম্যাটে আপলোড করুন:</h4>
+                        <textarea id="bulkJsonInput" rows="3" placeholder='[{"title": "ভিডিও ১", "url": "...", "category": "study"}, {"title": "ভিডিও ২", "driveId": "...", "category": "movie"}]' class="w-full bg-cardBg border border-slate-700 rounded-xl p-2.5 text-xs font-mono"></textarea>
+                        <button onclick="handleBulkUpload()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl text-xs font-bold transition">একাধিক ভিডিও একসাথে যোগ করুন</button>
+                    </div>
+
                     <!-- Manage Existing Videos List -->
-                    <div class="space-y-3 pt-4">
+                    <div class="space-y-3 pt-2">
                         <div class="flex justify-between items-center">
-                            <h4 class="font-bold text-sm text-slate-200">সকল ভিডিও ম্যানেজমেন্ট</h4>
-                            <button onclick="removeAllDemoVideos()" class="text-xs text-amber-400 hover:underline">ডেমো ভিডিওগুলো সরান</button>
+                            <h4 class="font-bold text-sm text-slate-200">সকল ভিডিও ম্যানেজ করুন</h4>
+                            <button onclick="removeAllDemoVideos()" class="text-xs text-amber-400 hover:underline">ডেমো ভিডিও মুছুন</button>
                         </div>
-                        <div id="adminVideoList" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
+                        <div id="adminVideoList" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
                     </div>
                 </div>
             </div>
@@ -239,9 +277,9 @@
         <p>&copy; 2026 VideoZone. সর্বস্বত্ব সংরক্ষিত।</p>
     </footer>
 
-    <!-- Main Script -->
+    <!-- Main Logic Script -->
     <script>
-        const defaultCategories = ["education", "entertainment", "animation"];
+        const defaultCategories = ["education", "entertainment", "animation", "tutorials"];
         const defaultVideos = [
             {
                 id: "demo-1",
@@ -250,7 +288,7 @@
                 category: "education",
                 thumbnail: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500&auto=format&fit=crop&q=60",
                 duration: "1:44:00",
-                driveId: "1B2M2Y8AsgT...", 
+                driveId: "", 
                 url: "https://www.w3schools.com/html/mov_bbb.mp4",
                 status: "published",
                 featured: true,
@@ -303,34 +341,20 @@
             localStorage.setItem('videozone_videos', JSON.stringify(videos));
         }
 
-        // Render Category Filter Buttons (Right-to-Left)
+        // Render Category Filter Buttons (Right-to-Left / Modern scroll)
         function renderCategories() {
             const container = document.getElementById('categoryFilters');
             const selectEl = document.getElementById('vCategorySelect');
             const cats = getCategories();
 
-            container.innerHTML = `<button onclick="filterCategory('all')" class="cat-btn ${currentCategory === 'all' ? 'bg-accent text-white' : 'bg-cardBg text-slate-300'} px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition">সব</button>`;
+            container.innerHTML = `<button onclick="filterCategory('all')" class="cat-btn ${currentCategory === 'all' ? 'bg-accent text-white shadow-lg shadow-blue-600/30' : 'bg-cardBg hover:bg-slate-800 text-slate-300'} px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition border border-slate-700/60">সব</button>`;
             selectEl.innerHTML = '';
 
             cats.forEach(cat => {
                 let isActive = currentCategory.toLowerCase() === cat.toLowerCase();
-                container.innerHTML += `<button onclick="filterCategory('${cat}')" class="cat-btn ${isActive ? 'bg-accent text-white' : 'bg-cardBg hover:bg-slate-700 text-slate-300'} px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition capitalize">${cat}</button>`;
+                container.innerHTML += `<button onclick="filterCategory('${cat}')" class="cat-btn ${isActive ? 'bg-accent text-white shadow-lg shadow-blue-600/30' : 'bg-cardBg hover:bg-slate-800 text-slate-300'} px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition capitalize border border-slate-700/60">${cat}</button>`;
                 selectEl.innerHTML += `<option value="${cat}">${cat}</option>`;
             });
-        }
-
-        function checkAndExtractDuration(video, cardElement) {
-            if (video.url && video.url.endsWith('.mp4')) {
-                const tempVid = document.createElement('video');
-                tempVid.src = video.url;
-                tempVid.onloadedmetadata = () => {
-                    let mins = Math.floor(tempVid.duration / 60);
-                    let secs = Math.floor(tempVid.duration % 60);
-                    let formatted = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-                    const badge = cardElement.querySelector('.duration-badge');
-                    if (badge) badge.innerText = formatted;
-                };
-            }
         }
 
         function renderVideos(searchQuery = '') {
@@ -371,23 +395,22 @@
 
         function createVideoCard(video) {
             const card = document.createElement('div');
-            card.className = "bg-cardBg border border-slate-700/60 rounded-xl overflow-hidden hover:border-accent transition flex flex-col group cursor-pointer shadow-lg relative";
+            card.className = "bg-cardBg border border-slate-700/60 rounded-xl overflow-hidden hover:border-accent transition-all duration-300 flex flex-col group cursor-pointer shadow-lg hover:shadow-2xl relative";
             card.onclick = () => { window.location.href = `play.html?id=${video.id}`; };
 
-            const thumbSrc = video.thumbnail ? video.thumbnail : 'https://via.placeholder.com/500x280?text=VideoZone';
+            const thumbSrc = video.thumbnail ? video.thumbnail : 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60';
             const duration = video.duration || '1:30:00';
             
             card.innerHTML = `
                 <div class="relative aspect-video bg-slate-900 overflow-hidden">
-                    <img src="${thumbSrc}" alt="${video.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/500x280?text=No+Image'">
-                    <span class="duration-badge absolute top-1.5 right-1.5 bg-black/80 text-white font-semibold text-[10px] px-1.5 py-0.5 rounded">${duration}</span>
-                    ${video.isDemo ? '<span class="absolute top-1.5 left-1.5 bg-amber-500/90 text-slate-950 font-bold text-[9px] px-1.5 py-0.5 rounded">ডেমো</span>' : ''}
-                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-2 pt-6">
-                        <h3 class="font-bold text-xs sm:text-sm text-white line-clamp-1 drop-shadow-md">${video.title}</h3>
+                    <img src="${thumbSrc}" alt="${video.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60'">
+                    <span class="absolute top-1.5 right-1.5 bg-black/80 backdrop-blur-md text-white font-semibold text-[10px] px-2 py-0.5 rounded-md">${duration}</span>
+                    ${video.isDemo ? '<span class="absolute top-1.5 left-1.5 bg-amber-500 text-slate-950 font-bold text-[9px] px-1.5 py-0.5 rounded shadow">ডেমো</span>' : ''}
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent p-2.5 pt-6">
+                        <h3 class="font-bold text-xs sm:text-sm text-white line-clamp-1 group-hover:text-blue-400 transition">${video.title}</h3>
                     </div>
                 </div>
             `;
-            checkAndExtractDuration(video, card);
             return card;
         }
 
@@ -397,12 +420,11 @@
             renderVideos(document.getElementById('searchInput').value);
         }
 
-        // Real-time auto update search listener
         document.getElementById('searchInput').addEventListener('input', (e) => {
             renderVideos(e.target.value);
         });
 
-        // Admin Security Check & Login
+        // Admin Authentication & Modal
         function openAdminLogin() {
             document.getElementById('adminModal').classList.remove('hidden');
             let isAdmin = localStorage.getItem('videozone_admin_logged') === 'true';
@@ -426,7 +448,7 @@
                 localStorage.setItem('videozone_admin_logged', 'true');
                 showAdminDashboard();
             } else {
-                alert('ভুল জিমেইল বা পাসওয়ার্ড! সঠিক জিমেইল (alsamimhossain83@gmail.com) এবং পাসওয়ার্ড দিন।');
+                alert('ভুল জিমেইল বা পাসওয়ার্ড! সঠিক জিমেইল (alsamimhossain83@gmail.com) দিন।');
             }
         }
 
@@ -450,23 +472,23 @@
             document.getElementById('videoManagerSection').classList.add('hidden');
             document.getElementById('categoriesManagerSection').classList.add('hidden');
             document.getElementById('adsManagerSection').classList.add('hidden');
-            document.getElementById('tabVideosBtn').className = "bg-darkBg text-slate-300 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap";
-            document.getElementById('tabCategoriesBtn').className = "bg-darkBg text-slate-300 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap";
-            document.getElementById('tabAdsBtn').className = "bg-darkBg text-slate-300 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap";
+            document.getElementById('tabVideosBtn').className = "bg-darkBg text-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap hover:bg-slate-800";
+            document.getElementById('tabCategoriesBtn').className = "bg-darkBg text-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap hover:bg-slate-800";
+            document.getElementById('tabAdsBtn').className = "bg-darkBg text-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap hover:bg-slate-800";
 
             if (tab === 'videos') {
                 document.getElementById('videoManagerSection').classList.remove('hidden');
-                document.getElementById('tabVideosBtn').className = "bg-accent text-white px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap";
+                document.getElementById('tabVideosBtn').className = "bg-accent text-white px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap shadow";
             } else if (tab === 'categories') {
                 document.getElementById('categoriesManagerSection').classList.remove('hidden');
-                document.getElementById('tabCategoriesBtn').className = "bg-accent text-white px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap";
+                document.getElementById('tabCategoriesBtn').className = "bg-accent text-white px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap shadow";
             } else if (tab === 'ads') {
                 document.getElementById('adsManagerSection').classList.remove('hidden');
-                document.getElementById('tabAdsBtn').className = "bg-accent text-white px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap";
+                document.getElementById('tabAdsBtn').className = "bg-accent text-white px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap shadow";
             }
         }
 
-        // Category Management Functions
+        // Category Management & Rename Functions
         function addNewCategory() {
             const input = document.getElementById('newCategoryInput');
             const catName = input.value.trim().toLowerCase();
@@ -486,8 +508,33 @@
             alert('ক্যাটাগরি সফলভাবে যোগ করা হয়েছে!');
         }
 
+        function renameCategory(oldName) {
+            const newName = prompt(`'${oldName}' ক্যাটাগরির নতুন নাম দিন:`, oldName);
+            if (!newName || newName.trim() === '') return;
+            let formattedNew = newName.trim().toLowerCase();
+
+            let cats = getCategories();
+            if (cats.includes(formattedNew)) {
+                alert('এই নামের ক্যাটাগরি ইতিমধ্যে বিদ্যমান!');
+                return;
+            }
+
+            cats = cats.map(c => c === oldName ? formattedNew : c);
+            saveCategories(cats);
+
+            // Also update videos belonging to this category
+            let videos = getVideos();
+            videos = videos.map(v => v.category === oldName ? { ...v, category: formattedNew } : v);
+            saveVideos(videos);
+
+            renderAdminCategoryList();
+            renderCategories();
+            renderVideos();
+            alert('ক্যাটাগরি সফলভাবে রিনেম করা হয়েছে!');
+        }
+
         function deleteCategory(catName) {
-            if (confirm(`আপনি কি নিশ্চিত '${catName}' ক্যাটাগরি মুছে ফেলতে চান?`)) {
+            if (confirm(`নিশ্চিত '${catName}' ক্যাটাগরি মুছে ফেলতে চান?`)) {
                 let cats = getCategories();
                 cats = cats.filter(c => c !== catName);
                 saveCategories(cats);
@@ -503,52 +550,66 @@
             listEl.innerHTML = '';
             cats.forEach(cat => {
                 const item = document.createElement('div');
-                item.className = "flex items-center justify-between bg-cardBg p-2.5 rounded-lg border border-slate-700 text-xs";
+                item.className = "flex items-center justify-between bg-cardBg p-2.5 rounded-xl border border-slate-700 text-xs";
                 item.innerHTML = `
                     <span class="font-bold text-slate-200 uppercase">${cat}</span>
-                    <button onclick="deleteCategory('${cat}')" class="text-rose-400 hover:underline px-2 py-1 bg-rose-500/10 rounded">মুছুন</button>
+                    <div class="space-x-2">
+                        <button onclick="renameCategory('${cat}')" class="text-blue-400 hover:underline px-2 py-1 bg-blue-500/10 rounded">রিনেম</button>
+                        <button onclick="deleteCategory('${cat}')" class="text-rose-400 hover:underline px-2 py-1 bg-rose-500/10 rounded">মুছুন</button>
+                    </div>
                 `;
                 listEl.appendChild(item);
             });
         }
 
-        // Ads Manager Functions
-        function saveAdUnits() {
-            const topBanner = document.getElementById('adTopBanner').value;
-            const inlineAd = document.getElementById('adInline').value;
-            const popunder = document.getElementById('adPopunder').value;
-
-            const adsConfig = { topBanner, inlineAd, popunder };
-            localStorage.setItem('videozone_ads_config', JSON.stringify(adsConfig));
-            alert('বিজ্ঞাপনের কোড সফলভাবে সংরক্ষিত হয়েছে!');
+        // Ads Manager Functions (6 formats)
+        function saveAllAdUnits() {
+            const adsConfig = {
+                popunder: document.getElementById('adPopunder').value,
+                socialBar: document.getElementById('adSocialBar').value,
+                native: document.getElementById('adNative').value,
+                banner728: document.getElementById('adBanner728').value,
+                banner320: document.getElementById('adBanner320').value,
+                banner300: document.getElementById('adBanner300').value
+            };
+            localStorage.setItem('videozone_all_ads', JSON.stringify(adsConfig));
+            alert('সকল অ্যাডস্টাররা অ্যাড কোড সফলভাবে সংরক্ষিত হয়েছে!');
             applySavedAds();
         }
 
         function loadSavedAdsToAdminForm() {
-            let saved = localStorage.getItem('videozone_ads_config');
+            let saved = localStorage.getItem('videozone_all_ads');
             if (saved) {
                 let ads = JSON.parse(saved);
-                document.getElementById('adTopBanner').value = ads.topBanner || '';
-                document.getElementById('adInline').value = ads.inlineAd || '';
                 document.getElementById('adPopunder').value = ads.popunder || '';
+                document.getElementById('adSocialBar').value = ads.socialBar || '';
+                document.getElementById('adNative').value = ads.native || '';
+                document.getElementById('adBanner728').value = ads.banner728 || '';
+                document.getElementById('adBanner320').value = ads.banner320 || '';
+                document.getElementById('adBanner300').value = ads.banner300 || '';
             }
         }
 
         function applySavedAds() {
-            let saved = localStorage.getItem('videozone_ads_config');
+            let saved = localStorage.getItem('videozone_all_ads');
             if (saved) {
                 let ads = JSON.parse(saved);
-                if (ads.topBanner) document.getElementById('dynamicTopBannerAd').innerHTML = ads.topBanner;
-                if (ads.inlineAd) document.getElementById('dynamicInlineAd').innerHTML = ads.inlineAd;
+                if (ads.banner728) document.getElementById('slotTopBanner').innerHTML = ads.banner728;
+                if (ads.native) document.getElementById('slotNativeBanner').innerHTML = ads.native;
+                if (ads.socialBar) {
+                    let sbDiv = document.createElement('div');
+                    sbDiv.innerHTML = ads.socialBar;
+                    document.body.appendChild(sbDiv);
+                }
                 if (ads.popunder) {
-                    let div = document.createElement('div');
-                    div.innerHTML = ads.popunder;
-                    document.body.appendChild(div);
+                    let popDiv = document.createElement('div');
+                    popDiv.innerHTML = ads.popunder;
+                    document.body.appendChild(popDiv);
                 }
             }
         }
 
-        // Video Management Functions
+        // Video Single & Bulk Management
         function renderAdminVideoList() {
             const listEl = document.getElementById('adminVideoList');
             const videos = getVideos();
@@ -618,6 +679,46 @@
             alert('ভিডিও সফলভাবে সংরক্ষণ করা হয়েছে!');
         }
 
+        function handleBulkUpload() {
+            const jsonText = document.getElementById('bulkJsonInput').value.trim();
+            if (!jsonText) {
+                alert('দয়া করে সঠিক JSON কোড দিন!');
+                return;
+            }
+            try {
+                let parsedList = JSON.parse(jsonText);
+                if (!Array.isArray(parsedList)) {
+                    alert('JSON ফরম্যাট অ্যারে [] আকারে হতে হবে!');
+                    return;
+                }
+                let videos = getVideos();
+                parsedList.forEach((item, index) => {
+                    videos.unshift({
+                        id: 'bulk-' + Date.now() + '-' + index,
+                        title: item.title || 'নামহীন ভিডিও',
+                        description: item.description || '',
+                        category: item.category || 'education',
+                        thumbnail: item.thumbnail || '',
+                        duration: item.duration || '1:30:00',
+                        driveId: item.driveId || '',
+                        url: item.url || '',
+                        status: 'published',
+                        featured: item.featured || false,
+                        trending: item.trending || false,
+                        isDemo: false,
+                        date: new Date().toISOString().split('T')[0]
+                    });
+                });
+                saveVideos(videos);
+                document.getElementById('bulkJsonInput').value = '';
+                renderAdminVideoList();
+                renderVideos();
+                alert(`${parsedList.length} টি ভিডিও সফলভাবে বাল্ক আপলোড করা হয়েছে!`);
+            } catch (err) {
+                alert('JSON পার্স করতে সমস্যা হয়েছে! সিনট্যাক্স চেক করুন।');
+            }
+        }
+
         function editVideo(id) {
             const v = getVideos().find(item => item.id === id);
             if (!v) return;
@@ -631,6 +732,7 @@
             document.getElementById('vFeatured').checked = v.featured;
             document.getElementById('vTrending').checked = v.trending;
             document.getElementById('formTitleText').innerText = "ভিডিও এডিট করুন";
+            switchTab('videos');
         }
 
         function deleteVideo(id) {

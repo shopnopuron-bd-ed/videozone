@@ -12,9 +12,9 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#0f172a',
-                        cardBg: '#1e293b',
-                        accent: '#3b82f6'
+                        darkBg: '#0b0f19',
+                        cardBg: '#131d31',
+                        accent: '#2563eb'
                     }
                 }
             }
@@ -23,19 +23,19 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col font-sans">
+<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col font-sans selection:bg-accent selection:text-white">
 
-    <!-- Dynamic Adsterra Top Banner Slot -->
-    <div id="playTopBannerAd" class="max-w-7xl mx-auto px-4 mt-4 flex justify-center"></div>
+    <!-- Top Banner Ad Slot -->
+    <div id="playTopBannerAd" class="max-w-7xl mx-auto px-4 mt-4 flex justify-center overflow-hidden"></div>
 
     <!-- Header / Navigation -->
-    <header class="bg-cardBg border-b border-slate-800 sticky top-0 z-50 shadow-md">
+    <header class="bg-cardBg border-b border-slate-800/80 sticky top-0 z-40 shadow-lg backdrop-blur-md bg-opacity-90">
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-2 text-xl font-bold text-accent">
-                <i class="fa-solid fa-play-circle text-2xl"></i>
-                <span>VideoZone</span>
+            <a href="index.html" class="flex items-center space-x-2 text-xl font-black text-accent tracking-wide">
+                <i class="fa-solid fa-play-circle text-2xl text-blue-500"></i>
+                <span class="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">VideoZone</span>
             </a>
-            <a href="index.html" class="bg-slate-700 hover:bg-slate-600 text-xs px-3 py-1.5 rounded-lg transition font-medium flex items-center space-x-1">
+            <a href="index.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-1.5 rounded-xl transition font-medium flex items-center space-x-1.5 border border-slate-700">
                 <i class="fa-solid fa-arrow-left"></i>
                 <span>হোম পেজ</span>
             </a>
@@ -43,25 +43,40 @@
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-5xl mx-auto px-4 py-6 flex-grow w-full space-y-8">
+    <main class="max-w-5xl mx-auto px-4 py-6 flex-grow w-full space-y-6">
         
-        <!-- Video Player & Details Section -->
+        <!-- Video Player & Notice Wrapper -->
         <div id="playerWrapper" class="space-y-4">
             <div class="relative aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-slate-800 flex items-center justify-center" id="videoPlayerBox">
-                <!-- Dynamic Player Content inserted here -->
+                <!-- Dynamic Player or Ad Interstitial Notice -->
+            </div>
+
+            <!-- Ad Notice Overlay Modal (Triggered during video play) -->
+            <div id="adNoticeModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+                <div class="bg-cardBg border border-amber-500/50 rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
+                    <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl">
+                        <i class="fa-solid fa-rectangle-ad"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-white">ভিডিও চালিয়ে যাবার জন্য অ্যাড দেখুন</h3>
+                    <p class="text-xs text-slate-300">আমাদের ফ্রি সার্ভিস সচল রাখতে এবং ভিডিও উপভোগ করতে নিচে ক্লিক করে বিজ্ঞাপনটি সম্পূর্ণ দেখুন।</p>
+                    <div id="inlineAdBox" class="bg-darkBg p-2 rounded-xl border border-slate-700 min-h-[50px] flex items-center justify-center">
+                        <!-- Native or Rectangle Ad unit -->
+                    </div>
+                    <button onclick="resumeVideoAfterAd()" class="w-full bg-accent hover:bg-blue-600 py-2.5 rounded-xl text-xs font-bold transition shadow">ভিডিও চালিয়ে যান</button>
+                </div>
             </div>
 
             <!-- Video Metadata -->
-            <div class="space-y-3 bg-cardBg p-5 rounded-2xl border border-slate-800 shadow-lg">
+            <div class="space-y-3 bg-cardBg p-5 rounded-2xl border border-slate-800/80 shadow-lg">
                 <div class="flex items-center justify-between text-xs text-slate-400">
-                    <span id="videoCategory" class="bg-accent/20 text-accent px-2.5 py-1 rounded-md uppercase font-semibold">Category</span>
+                    <span id="videoCategory" class="bg-accent/20 text-accent px-2.5 py-1 rounded-lg uppercase font-bold tracking-wider">Category</span>
                     <span><i class="fa-regular fa-calendar mr-1"></i><span id="videoDate">2026-10-18</span></span>
                 </div>
-                <h1 id="videoTitle" class="text-xl font-bold text-slate-100">ভিডিও শিরোনাম লোড হচ্ছে...</h1>
-                <p id="videoDesc" class="text-sm text-slate-300 leading-relaxed">বিবরণ লোড হচ্ছে...</p>
+                <h1 id="videoTitle" class="text-lg sm:text-xl font-bold text-slate-100">ভিডিও শিরোনাম লোড হচ্ছে...</h1>
+                <p id="videoDesc" class="text-xs sm:text-sm text-slate-300 leading-relaxed">বিবরণ লোড হচ্ছে...</p>
                 <div id="playbackWarning" class="hidden bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs p-3 rounded-xl flex items-start space-x-2">
                     <i class="fa-solid fa-triangle-exclamation text-base mt-0.5"></i>
-                    <span id="warningText">Google Drive বা সরাসরি প্লেব্যাকে সমস্যা হলে প্রিভিউ বা লিংক চেক করুন।</span>
+                    <span id="warningText">Google Drive ফাইলের ক্ষেত্রে নিশ্চিত করুন পারমিশন 'Anyone with the link' দেওয়া আছে।</span>
                 </div>
             </div>
         </div>
@@ -74,10 +89,10 @@
             <a href="index.html" class="inline-block bg-accent hover:bg-blue-600 px-5 py-2.5 rounded-xl text-sm font-medium transition">হোম পেজে ফিরে যান</a>
         </div>
 
-        <!-- Adsterra Inline / Middle Ad Slot -->
+        <!-- Middle Native / Rectangle Ad Slot -->
         <div id="playInlineAd" class="flex justify-center my-4"></div>
 
-        <!-- Same Category Videos Section (3 Columns matching reference image style) -->
+        <!-- Related Videos Section -->
         <section class="space-y-4 pt-4 border-t border-slate-800">
             <div class="flex items-center justify-between">
                 <h2 id="sectionTitle" class="text-base font-bold flex items-center space-x-2 text-blue-400">
@@ -85,9 +100,7 @@
                     <span>একই ক্যাটাগরির আরও ভিডিও</span>
                 </h2>
             </div>
-            <div id="relatedContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-                <!-- Dynamic Related Cards -->
-            </div>
+            <div id="relatedContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4"></div>
         </section>
     </main>
 
@@ -96,7 +109,7 @@
         <p>&copy; 2026 VideoZone. সর্বস্বত্ব সংরক্ষিত।</p>
     </footer>
 
-    <!-- Player Logic Script -->
+    <!-- Player & Ad Notice Script -->
     <script>
         const defaultVideos = [
             {
@@ -106,28 +119,13 @@
                 category: "education",
                 thumbnail: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500&auto=format&fit=crop&q=60",
                 duration: "1:44:00",
-                driveId: "1B2M2Y8AsgT...", 
+                driveId: "", 
                 url: "https://www.w3schools.com/html/mov_bbb.mp4",
                 status: "published",
                 featured: true,
                 trending: false,
                 isDemo: true,
                 date: "2026-10-18"
-            },
-            {
-                id: "demo-2",
-                title: "মজাদার অ্যানিমেশন শর্ট ফিল্ম",
-                description: "শিশু ও সবার জন্য একটি সুন্দর অ্যানিমেশন ভিডিও ক্লিপ।",
-                category: "animation",
-                thumbnail: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=500&auto=format&fit=crop&q=60",
-                duration: "1:54:00",
-                driveId: "",
-                url: "https://www.w3schools.com/html/mov_bbb.mp4",
-                status: "published",
-                featured: false,
-                trending: true,
-                isDemo: true,
-                date: "2026-10-17"
             }
         ];
 
@@ -139,6 +137,8 @@
             }
             return JSON.parse(stored);
         }
+
+        let activeVideoEl = null;
 
         function loadPlayer() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -157,14 +157,12 @@
                 return;
             }
 
-            // Populate Metadata
             document.getElementById('videoTitle').innerText = video.title;
             document.getElementById('videoDesc').innerText = video.description || 'কোনো বিবরণ নেই।';
             document.getElementById('videoCategory').innerText = video.category;
             document.getElementById('videoDate').innerText = video.date;
 
-            // Render Player based on Drive ID or URL
-            if (video.driveId && video.driveId.trim() !== '' && video.driveId !== '1B2M2Y8AsgT...') {
+            if (video.driveId && video.driveId.trim() !== '') {
                 playerBox.innerHTML = `
                     <iframe src="https://drive.google.com/file/d/${video.driveId.trim()}/preview" 
                         class="w-full h-full border-0" 
@@ -172,28 +170,62 @@
                         allowfullscreen>
                     </iframe>
                 `;
-                document.getElementById('playbackWarning').classList.remove('hidden');
-                document.getElementById('warningText').innerText = "Google Drive ফাইলের ক্ষেত্রে নিশ্চিত করুন যে পারমিশন 'Anyone with the link – Viewer' দেওয়া আছে।";
             } else if (video.url && video.url.trim() !== '') {
                 playerBox.innerHTML = `
-                    <video controls class="w-full h-full object-contain" poster="${video.thumbnail}">
+                    <video id="mainVideoPlayer" controls class="w-full h-full object-contain" poster="${video.thumbnail}">
                         <source src="${video.url.trim()}" type="video/mp4">
                         আপনার ব্রাউজার ভিডিও ট্যাগ সমর্থন করে না।
                     </video>
                 `;
+                setupAdNoticeTrigger();
             } else {
                 playerBox.innerHTML = `
-                    <video controls class="w-full h-full object-contain" poster="${video.thumbnail}">
+                    <video id="mainVideoPlayer" controls class="w-full h-full object-contain" poster="${video.thumbnail}">
                         <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
                         আপনার ব্রাউজার ভিডিও ট্যাগ সমর্থন করে না।
                     </video>
                 `;
-                document.getElementById('playbackWarning').classList.remove('hidden');
-                document.getElementById('warningText').innerText = "ডেমো ভিডিও বা সঠিক লিংক না থাকায় নমুনা ভিডিও প্লে করা হচ্ছে।";
+                setupAdNoticeTrigger();
             }
 
-            // Render Same Category or Fallback Related Videos in 3 columns
             renderCategoryVideos(videos, video.category, video.id);
+        }
+
+        // Trigger Ad Notice after 10 seconds of playing video
+        function setupAdNoticeTrigger() {
+            const vEl = document.getElementById('mainVideoPlayer');
+            if (!vEl) return;
+            
+            let adShown = false;
+            vEl.addEventListener('timeupdate', () => {
+                // Show ad notice when video reaches 10 seconds and hasn't been shown yet
+                if (vEl.currentTime > 10 && !adShown) {
+                    adShown = true;
+                    vEl.pause();
+                    document.getElementById('adNoticeModal').classList.remove('hidden');
+                    loadInlineAdToNotice();
+                }
+            });
+        }
+
+        function loadInlineAdToNotice() {
+            let saved = localStorage.getItem('videozone_all_ads');
+            if (saved) {
+                let ads = JSON.parse(saved);
+                if (ads.native) {
+                    document.getElementById('inlineAdBox').innerHTML = ads.native;
+                } else if (ads.banner300) {
+                    document.getElementById('inlineAdBox').innerHTML = ads.banner300;
+                } else {
+                    document.getElementById('inlineAdBox').innerHTML = '<span class="text-[11px] text-slate-400">প্রোফেশনাল অ্যাডস্টাররা অ্যাড লোড হচ্ছে...</span>';
+                }
+            }
+        }
+
+        function resumeVideoAfterAd() {
+            document.getElementById('adNoticeModal').classList.add('hidden');
+            const vEl = document.getElementById('mainVideoPlayer');
+            if (vEl) vEl.play();
         }
 
         function renderCategoryVideos(videos, currentCat, currentId) {
@@ -201,10 +233,8 @@
             const titleEl = document.getElementById('sectionTitle');
             container.innerHTML = '';
 
-            // First try to filter by exact same category
             let list = videos.filter(v => v.status === 'published' && v.id !== currentId && v.category.toLowerCase() === currentCat.toLowerCase());
 
-            // Fallback: if not enough in same category, grab other category videos
             if (list.length === 0) {
                 titleEl.innerHTML = `<i class="fa-solid fa-list-ul"></i><span>অন্যান্য ক্যাটাগরির ভিডিও</span>`;
                 list = videos.filter(v => v.status === 'published' && v.id !== currentId);
@@ -222,15 +252,15 @@
                 card.className = "bg-cardBg border border-slate-700/60 rounded-xl overflow-hidden hover:border-accent transition flex flex-col group cursor-pointer shadow-lg relative";
                 card.onclick = () => { window.location.href = `play.html?id=${v.id}`; };
 
-                const thumbSrc = v.thumbnail ? v.thumbnail : 'https://via.placeholder.com/500x280?text=VideoZone';
+                const thumbSrc = v.thumbnail ? v.thumbnail : 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60';
                 const duration = v.duration || '1:30:00';
 
                 card.innerHTML = `
                     <div class="relative aspect-video bg-slate-900 overflow-hidden">
-                        <img src="${thumbSrc}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/500x280?text=No+Image'">
+                        <img src="${thumbSrc}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60'">
                         <span class="absolute top-1.5 right-1.5 bg-black/80 text-white font-semibold text-[10px] px-1.5 py-0.5 rounded">${duration}</span>
                         <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-2 pt-6">
-                            <h3 class="font-bold text-xs sm:text-sm text-white line-clamp-1 drop-shadow-md">${v.title}</h3>
+                            <h3 class="font-bold text-xs sm:text-sm text-white line-clamp-1">${v.title}</h3>
                         </div>
                     </div>
                 `;
@@ -238,17 +268,21 @@
             });
         }
 
-        // Apply Saved Adsterra Ads
         function applySavedAds() {
-            let saved = localStorage.getItem('videozone_ads_config');
+            let saved = localStorage.getItem('videozone_all_ads');
             if (saved) {
                 let ads = JSON.parse(saved);
-                if (ads.topBanner) document.getElementById('playTopBannerAd').innerHTML = ads.topBanner;
-                if (ads.inlineAd) document.getElementById('playInlineAd').innerHTML = ads.inlineAd;
+                if (ads.banner728) document.getElementById('playTopBannerAd').innerHTML = ads.banner728;
+                if (ads.native) document.getElementById('playInlineAd').innerHTML = ads.native;
+                if (ads.socialBar) {
+                    let sbDiv = document.createElement('div');
+                    sbDiv.innerHTML = ads.socialBar;
+                    document.body.appendChild(sbDiv);
+                }
                 if (ads.popunder) {
-                    let div = document.createElement('div');
-                    div.innerHTML = ads.popunder;
-                    document.body.appendChild(div);
+                    let popDiv = document.createElement('div');
+                    popDiv.innerHTML = ads.popunder;
+                    document.body.appendChild(popDiv);
                 }
             }
         }
