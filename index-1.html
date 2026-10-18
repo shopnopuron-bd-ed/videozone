@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="bn" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Streamly</title>
+<meta name="description" content="আধুনিক ভিডিও স্ট্রিমিং">
+<link id="fav" rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%23ff6b4a%22/%3E%3Cpath d=%22M26 20l20 12-20 12z%22 fill=%22%23fff%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{--bg:#0a0c11;--s1:#131722;--s2:#1b2030;--bd:#262c3f;--tx:#eef0f7;--mt:#8d96b3;--ac:#ff6b4a;--ac2:#ffb020;--ok:#3ddc97;--er:#ff5c7a;--r:14px;--f:'Hind Siliguri',system-ui,sans-serif;--h:'Sora','Hind Siliguri',sans-serif}
+[data-theme=light]{--bg:#f6f4ef;--s1:#fff;--s2:#efece4;--bd:#ddd8ca;--tx:#1a1c24;--mt:#666b7f}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 var(--f);-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--ac2);outline-offset:2px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd)}
+.bar-h{display:flex;align-items:center;gap:12px;min-height:60px}
+.logo{display:flex;align-items:center;gap:9px;font:800 19px var(--h);letter-spacing:-.02em}
+.logo i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:grid;place-items:center;color:#fff;font-style:normal;font-size:13px}
+.logo img{height:30px}
+.sbox{flex:1;max-width:460px;display:flex;border:1px solid var(--bd);border-radius:99px;background:var(--s1);overflow:hidden}
+.sbox input{flex:1;min-width:0;border:0;background:none;padding:8px 16px;outline:0}
+.sbox button{border:0;background:var(--s2);padding:0 16px;cursor:pointer}
+nav.main{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-bottom:8px}
+nav.main a{padding:6px 14px;border-radius:99px;color:var(--mt);font-weight:600;white-space:nowrap;font-size:14px}
+nav.main a.on,nav.main a:hover{background:var(--s2);color:var(--tx)}
+.act{display:flex;gap:8px;margin-left:auto;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--bd);background:var(--s1);padding:8px 14px;border-radius:11px;cursor:pointer;font-weight:600;font-size:14px;transition:.15s}
+.btn:hover{border-color:var(--ac)}
+.btn.p{background:linear-gradient(120deg,var(--ac),var(--ac2));border-color:transparent;color:#1a0d05}
+.btn.d{color:var(--er)}.btn.sm{padding:5px 10px;font-size:13px}.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn.on{border-color:var(--ac);color:var(--ac)}
+main{padding:20px 0 50px;min-height:70vh}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px 16px}
+.card .th{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:var(--s2)}
+.card .th img{width:100%;height:100%;object-fit:cover;transition:transform .35s}
+.card:hover .th img{transform:scale(1.05)}
+.card h3{margin:9px 0 2px;font-size:15.5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card p{margin:0;color:var(--mt);font-size:13px}
+.st{position:absolute;left:8px;top:8px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:#000a;color:#fff}
+.pg{position:absolute;left:0;bottom:0;height:3px;background:var(--ac)}
+.row{margin-bottom:34px}
+.rh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.rh h2{margin:0;font:700 20px var(--h)}.rh a{color:var(--ac);font-size:13.5px;font-weight:600}
+.hero{position:relative;border-radius:22px;overflow:hidden;min-height:300px;margin-bottom:30px;display:flex;align-items:flex-end;background:var(--s2) center/cover}
+.hero:before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#000d 8%,#0000 70%)}
+.hero div{position:relative;padding:26px;max-width:640px;color:#fff}
+.hero h1{margin:0 0 6px;font:800 clamp(24px,4vw,38px)/1.25 var(--h)}
+.hero p{margin:0 0 14px;opacity:.85;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.watch{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px}
+.player{position:relative;aspect-ratio:16/9;background:#000 center/cover;border-radius:var(--r);overflow:hidden}
+.player video{position:absolute;inset:0;width:100%;height:100%;background:#000}
+.bigplay{position:absolute;inset:0;margin:auto;width:72px;height:72px;border-radius:50%;border:0;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:26px;cursor:pointer;box-shadow:0 0 0 10px #ff6b4a33}
+.perr{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;background:#000d;color:#fff;text-align:center;padding:16px}
+.pbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.pbar select{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:5px 8px}
+.watch h1{margin:6px 0;font:700 22px/1.4 var(--h)}
+.meta{color:var(--mt);font-size:13.5px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.desc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.side .card{display:grid;grid-template-columns:140px 1fr;gap:10px;margin-bottom:12px}
+.side .card h3{margin:0;font-size:14px}
+.sk{border-radius:var(--r);background:linear-gradient(90deg,var(--s1),var(--s2),var(--s1));background-size:200% 100%;animation:sh 1.2s infinite;aspect-ratio:16/10}
+@keyframes sh{to{background-position:-200% 0}}
+.state{text-align:center;padding:60px 16px;color:var(--mt)}
+.state h2{color:var(--tx);margin:0 0 6px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+select,input[type=text],input[type=email],input[type=number],input[type=url],input[type=datetime-local],textarea{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;width:100%}
+.filters select{width:auto}
+.catgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.cat{border:1px solid var(--bd);background:var(--s1);border-radius:var(--r);overflow:hidden}
+.cat div.t{aspect-ratio:16/8;background:linear-gradient(135deg,var(--ac),var(--ac2)) center/cover}
+.cat b{display:block;padding:10px 12px}
+.prose{max-width:760px}.prose h1{font:800 28px var(--h)}
+footer{border-top:1px solid var(--bd);padding:26px 0;color:var(--mt);font-size:13.5px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:space-between}
+footer nav{display:flex;gap:16px;flex-wrap:wrap}
+/* admin */
+.adm{display:grid;grid-template-columns:200px 1fr;gap:22px}
+.adm aside{display:flex;flex-direction:column;gap:4px}
+.adm aside a{padding:9px 12px;border-radius:10px;color:var(--mt);font-weight:600}
+.adm aside a.on{background:var(--s2);color:var(--tx)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
+.stat{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px}
+.stat b{display:block;font:800 26px var(--h)}.stat span{color:var(--mt);font-size:13px}
+.panel{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:18px;overflow-x:auto}
+.panel h3{margin:0 0 10px;font:700 16px var(--h)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--bd);vertical-align:middle}
+td .btn{margin:2px}
+.tag{font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--s2)}
+.tag.published{color:var(--ok)}.tag.failed{color:var(--er)}.tag.processing{color:var(--ac2)}
+.mask{position:fixed;inset:0;z-index:60;background:#000a;display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto}
+.modal{width:100%;max-width:640px;background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:20px;margin:auto}
+.modal h3{margin:0 0 14px;font:700 19px var(--h)}
+.fg{display:grid;gap:10px}.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.l{font-size:13px;color:var(--mt);font-weight:600;display:block;margin-bottom:3px}
+.prog{height:8px;border-radius:9px;background:var(--s2);overflow:hidden}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--ac2))}
+.fmsg{min-height:20px;font-size:13.5px;font-weight:600}.fmsg.e{color:var(--er)}.fmsg.o{color:var(--ok)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:90;background:var(--s2);border:1px solid var(--ac);padding:10px 18px;border-radius:12px;font-weight:600}
+@media(max-width:900px){.watch{grid-template-columns:1fr}.adm{grid-template-columns:1fr}.adm aside{flex-direction:row;overflow-x:auto}.sbox{order:5;max-width:none;flex-basis:100%}.bar-h{flex-wrap:wrap;padding:8px 0}.fr2{grid-template-columns:1fr}}
+@media(max-width:520px){.grid{grid-template-columns:1fr 1fr;gap:14px 10px}.card h3{font-size:14px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* ============ CONFIG — এখানে আপনার Supabase তথ্য বসান (anon key প্রকাশ্য হতে পারে; service_role key কখনো নয়) ============ */
+const CFG={SUPABASE_URL:'',SUPABASE_ANON_KEY:'',SITE_URL:'',MAX_UPLOAD_MB:50,PAGE:12};
+/* ================================================================================================================ */
+const HLS_URL='https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js';
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const lsGet=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+const nf=n=>Number(n||0).toLocaleString('bn-BD');
+const dt=d=>new Date(d).toLocaleDateString('bn-BD',{year:'numeric',month:'short',day:'numeric'});
+const VC='id,slug,title,description,thumb_url,views,publish_at,status,source_url,source_type,duration,category_id,tags,featured,trending,storage_path,thumb_path,categories(name,slug)';
+let sb,S={user:null,admin:false,cats:[],st:{name:'Streamly',desc:'',contact:'',theme:'dark',logo:'',favicon:''},home:{cats:[]}},cleanup=null;
+
+/* ---------- utils ---------- */
+function toast(m){const t=el('div','toast',esc(m));document.body.appendChild(t);setTimeout(()=>t.remove(),2200)}
+function el(t,c,h){const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
+const run=async p=>{const r=await p;if(r.error)throw r.error;return r};
+const skel=n=>`<div class="grid">${'<div><div class="sk"></div></div>'.repeat(n)}</div>`;
+const state=(t,m,btn='')=>`<div class="state"><h2>${t}</h2><p>${m}</p>${btn}</div>`;
+function fail(msg,retry){view(state('কিছু ভুল হয়েছে',esc(msg||'নেটওয়ার্ক বা সার্ভার সমস্যা।'),'<button class="btn p" id="retry">আবার চেষ্টা করুন</button>'));$('#retry').onclick=retry||route}
+function view(h){$('#view').innerHTML=h}
+function askConfirm(msg){return new Promise(r=>{const m=el('div','mask',`<div class="modal" style="max-width:420px"><h3>নিশ্চিত করুন</h3><p>${esc(msg)}</p><div class="acts"><button class="btn d" id="y">হ্যাঁ</button><button class="btn" id="n">না</button></div></div>`);document.body.appendChild(m);$('#y',m).onclick=()=>{m.remove();r(true)};$('#n',m).onclick=()=>{m.remove();r(false)}})}
+function modal(h){const m=el('div','mask',`<div class="modal">${h}</div>`);m.addEventListener('mousedown',e=>{if(e.target===m)m.remove()});document.body.appendChild(m);return m}
+function setMeta(title,desc,img,path){
+  document.title=title;const d=desc||S.st.desc;
+  const set=(sel,attr,val,mk)=>{let n=$(sel);if(!n){n=el('meta');mk(n);document.head.appendChild(n)}n.setAttribute(attr,val)};
+  set('meta[name=description]','content',d,n=>n.name='description');
+  set('meta[property="og:title"]','content',title,n=>n.setAttribute('property','og:title'));
+  set('meta[property="og:description"]','content',d,n=>n.setAttribute('property','og:description'));
+  if(img)set('meta[property="og:image"]','content',img,n=>n.setAttribute('property','og:image'));
+  let c=$('link[rel=canonical]');if(!c){c=el('link');c.rel='canonical';document.head.appendChild(c)}c.href=(CFG.SITE_URL||location.origin)+(path||location.pathname);
+  $$('script[data-ld]').forEach(s=>s.remove());
+}
+function ld(o){const s=el('script');s.type='application/ld+json';s.dataset.ld=1;s.text=JSON.stringify(o);document.head.appendChild(s)}
+function loadScript(src){return new Promise((ok,no)=>{if($(`script[src="${src}"]`))return ok();const s=el('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
+function vkey(){let k=localStorage.getItem('tbp_vk');if(!k){k=(crypto.randomUUID?crypto.randomUUID():Date.now()+''+Math.random()).replace(/[^a-z0-9-]/gi,'');try{localStorage.setItem('tbp_vk',k)}catch{}}return k}
+const slugify=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const rnd=()=>Math.random().toString(36).slice(2,6);
+
+/* ---------- shell ---------- */
+function shell(){
+  $('#app').innerHTML=`<header class="top"><div class="wrap"><div class="bar-h">
+    <a class="logo" data-l href="/">${S.st.logo?`<img src="${esc(S.st.logo)}" alt="">`:'<i>▶</i>'}<span>${esc(S.st.name)}</span></a>
+    <form class="sbox" id="sf" role="search"><input type="text" name="q" placeholder="ভিডিও খুঁজুন…" aria-label="সার্চ"><button aria-label="খুঁজুন">🔍</button></form>
+    <div class="act"><button class="btn sm" id="th" aria-label="থিম">◐</button><span id="auth"></span></div></div>
+    <nav class="main" id="nav"></nav></div></header>
+    <main class="wrap" id="view"></main>
+    <footer><div class="wrap"><span>© ${new Date().getFullYear()} ${esc(S.st.name)}</span><nav><a data-l href="/about">আমাদের সম্পর্কে</a><a data-l href="/contact">যোগাযোগ</a><a data-l href="/privacy">প্রাইভেসি</a><a data-l href="/terms">শর্তাবলী</a><a data-l href="/copyright">কপিরাইট</a></nav></div></footer>`;
+  $('#sf').onsubmit=e=>{e.preventDefault();go('/search?q='+encodeURIComponent(e.target.q.value.trim()))};
+  $('#th').onclick=()=>{const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;lsSet('tbp_theme',t)};
+  navAuth();
+}
+function navAuth(){
+  const p=location.pathname,L=[['/','হোম'],['/trending','ট্রেন্ডিং'],['/categories','ক্যাটাগরি'],['/history','হিস্ট্রি'],['/watchlist','ওয়াচলিস্ট']];
+  if(S.admin)L.push(['/admin','অ্যাডমিন']);
+  $('#nav').innerHTML=L.map(([h,t])=>`<a data-l href="${h}" class="${(h==='/'?p==='/':p.startsWith(h))?'on':''}">${t}</a>`).join('');
+  $('#auth').innerHTML=S.user?`<button class="btn sm" id="lo">লগআউট</button>`:`<a data-l class="btn sm p" href="/login">লগইন</a>`;
+  if(S.user)$('#lo').onclick=async()=>{await sb.auth.signOut();S.user=null;S.admin=false;navAuth();go('/')};
+}
+
+/* ---------- data helpers ---------- */
+const pubQ=(sel=VC,opt)=>sb.from('videos').select(sel,opt).eq('status','published').lte('publish_at',new Date().toISOString());
+const card=(v,prog)=>`<a class="card" data-l href="/watch/${esc(v.slug)}"><div class="th"><img loading="lazy" decoding="async" src="${esc(v.thumb_url||'')}" alt="" onerror="this.style.visibility='hidden'">${v.status!=='published'?`<span class="st">${esc(v.status)}</span>`:''}${prog?`<span class="pg" style="width:${prog}%"></span>`:''}</div><div><h3>${esc(v.title)}</h3><p>${nf(v.views)} ভিউ · ${dt(v.publish_at)}</p></div></a>`;
+const rowH=(t,vs,href)=>vs.length?`<section class="row"><div class="rh"><h2>${t}</h2>${href?`<a data-l href="${href}">সব দেখুন</a>`:''}</div><div class="grid">${vs.map(v=>card(v)).join('')}</div></section>`:'';
+function paged(root,mk){
+  let p=0;const grid=$('.grid',root),btn=$('.more',root);
+  async function load(){btn.disabled=true;try{const a=p*CFG.PAGE;const r=await run(mk(a,a+CFG.PAGE-1));if(!p&&!r.data.length){grid.outerHTML=state('কোনো ভিডিও পাওয়া যায়নি','অন্য কিছু খুঁজে দেখুন।');btn.hidden=true;return}grid.insertAdjacentHTML('beforeend',r.data.map(v=>card(v)).join(''));p++;btn.hidden=p*CFG.PAGE>=(r.count||0)}catch(e){toast('লোড করা যায়নি, আবার চেষ্টা করুন')}btn.disabled=false}
+  btn.onclick=load;load();
+}
+const pagedHTML=()=>`<div><div class="grid"></div><p style="text-align:center"><button class="btn more" hidden>আরও দেখুন</button></p></div>`;
+
+/* ---------- history / watchlist ---------- */
+async function getHist(n=20){
+  if(S.user){const r=await run(sb.from('watch_history').select('position_sec,duration,updated_at,videos('+VC+')').order('updated_at',{ascending:false}).limit(n));return r.data.filter(x=>x.videos&&x.videos.status==='published').map(x=>({v:x.videos,pos:x.position_sec,dur:x.duration}))}
+  const h=lsGet('tbp_hist',{});return Object.values(h).sort((a,b)=>b.t-a.t).slice(0,n).map(x=>({v:{...x.v,status:'published'},pos:x.pos,dur:x.dur}));
+}
+async function getPos(id){
+  if(S.user){const r=await sb.from('watch_history').select('position_sec').eq('video_id',id).maybeSingle();return r.data?.position_sec||0}
+  return lsGet('tbp_hist',{})[id]?.pos||0;
+}
+function saveProg(v,pos,dur){
+  pos=Math.floor(pos||0);dur=Math.floor(dur||0);if(!dur)return;
+  if(S.user)sb.from('watch_history').upsert({user_id:S.user.id,video_id:v.id,position_sec:pos,duration:dur,updated_at:new Date().toISOString()}).then(()=>{});
+  else{const h=lsGet('tbp_hist',{});h[v.id]={pos,dur,t:Date.now(),v:{id:v.id,slug:v.slug,title:v.title,thumb_url:v.thumb_url,views:v.views,publish_at:v.publish_at}};lsSet('tbp_hist',h)}
+}
+async function wlHas(id,kind){
+  if(S.user){const r=await sb.from('watchlist').select('video_id').eq('video_id',id).eq('kind',kind).maybeSingle();return !!r.data}
+  return (lsGet('tbp_wl',{})[kind]||[]).includes(id);
+}
+async function wlToggle(id,kind){
+  const has=await wlHas(id,kind);
+  if(S.user){if(has)await run(sb.from('watchlist').delete().eq('video_id',id).eq('kind',kind));else await run(sb.from('watchlist').insert({user_id:S.user.id,video_id:id,kind}))}
+  else{const w=lsGet('tbp_wl',{});w[kind]=has?(w[kind]||[]).filter(x=>x!==id):[...(w[kind]||[]),id];lsSet('tbp_wl',w)}
+  return !has;
+}
+
+/* ---------- router ---------- */
+function go(p,replace){history[replace?'replaceState':'pushState'](0,'',p);route()}
+addEventListener('popstate',route);
+document.addEventListener('click',e=>{const a=e.target.closest('a[data-l]');if(a&&!e.metaKey&&!e.ctrlKey){e.preventDefault();go(a.getAttribute('href'))}});
+async function route(){
+  if(cleanup){try{cleanup()}catch{}cleanup=null}
+  const u=new URL(location.href),p=u.pathname.replace(/\/+$/,'')||'/',seg=p.split('/').filter(Boolean);
+  if(!$('#view'))shell();else navAuth();
+  window.scrollTo(0,0);
+  try{
+    if(p==='/')return await home();
+    if(seg[0]==='watch'&&seg[1])return await watch(decodeURIComponent(seg[1]));
+    if(p==='/search')return search(u.searchParams);
+    if(p==='/trending')return trending();
+    if(p==='/categories')return categories();
+    if(seg[0]==='c'&&seg[1])return catPage(seg[1]);
+    if(p==='/history')return historyPage();
+    if(p==='/watchlist')return watchlist();
+    if(p==='/login')return login();
+    if(seg[0]==='admin')return admin(seg[1]||'');
+    if(PAGES[seg[0]]&&seg.length===1)return staticPage(seg[0]);
+    notFound();
+  }catch(e){console.error(e);fail('পেজ লোড করা যায়নি।')}
+}
+function notFound(){setMeta('৪০৪ — '+S.st.name);view(state('৪০৪','পেজটি খুঁজে পাওয়া যায়নি।','<a data-l class="btn p" href="/">হোমে ফিরুন</a>'))}
+
+/* ---------- public pages ---------- */
+async function home(){
+  setMeta(S.st.name,S.st.desc);view(skel(8));
+  ld({'@context':'https://schema.org','@type':'WebSite',name:S.st.name,url:CFG.SITE_URL||location.origin});
+  const catSlugs=(S.home.cats||[]).slice(0,4);
+  const [feat,trend,latest,pop,hist,...cv]=await Promise.all([
+    pubQ().eq('featured',true).order('publish_at',{ascending:false}).limit(1),
+    pubQ().eq('trending',true).order('views',{ascending:false}).limit(8),
+    pubQ().order('publish_at',{ascending:false}).limit(8),
+    pubQ().order('views',{ascending:false}).limit(8),
+    getHist(8).catch(()=>[]),
+    ...catSlugs.map(s=>{const c=S.cats.find(x=>x.slug===s);return c?pubQ().eq('category_id',c.id).order('publish_at',{ascending:false}).limit(4):Promise.resolve({data:[]})})
+  ]);
+  const f=feat.data?.[0];
+  if(!latest.data?.length&&!f)return view(state('এখনো কোনো ভিডিও নেই','অ্যাডমিন ভিডিও প্রকাশ করলে এখানে দেখা যাবে।'));
+  view(`${f?`<a class="hero" data-l href="/watch/${esc(f.slug)}" style="background-image:url('${esc(f.thumb_url||'')}')"><div><h1>${esc(f.title)}</h1><p>${esc(f.description||'')}</p><span class="btn p">▶ এখনই দেখুন</span></div></a>`:''}
+  ${hist.length?`<section class="row"><div class="rh"><h2>দেখা চালিয়ে যান</h2><a data-l href="/history">সব দেখুন</a></div><div class="grid">${hist.map(h=>card(h.v,h.dur?Math.min(100,h.pos/h.dur*100):0)).join('')}</div></section>`:''}
+  ${rowH('🔥 ট্রেন্ডিং',trend.data||[],'/trending')}${rowH('🆕 সর্বশেষ',latest.data||[],'/search?sort=latest')}${rowH('⭐ জনপ্রিয়',pop.data||[],'/search?sort=popular')}
+  ${cv.map((r,i)=>{const c=S.cats.find(x=>x.slug===catSlugs[i]);return c?rowH(esc(c.name),r.data||[],'/c/'+c.slug):''}).join('')}`);
+}
+function trending(){
+  setMeta('ট্রেন্ডিং — '+S.st.name);view(`<div class="rh"><h2>🔥 ট্রেন্ডিং</h2></div>${pagedHTML()}`);
+  paged($('#view'),(a,b)=>pubQ(VC,{count:'exact'}).order('trending',{ascending:false}).order('views',{ascending:false}).range(a,b));
+}
+function search(P){
+  const q=(P.get('q')||'').trim(),cat=P.get('cat')||'',sort=P.get('sort')||'latest';
+  setMeta((q?`"${q}" — `:'')+'সার্চ — '+S.st.name);
+  view(`<form class="filters" id="ff"><select name="cat"><option value="">সব ক্যাটাগরি</option>${S.cats.map(c=>`<option value="${esc(c.slug)}" ${c.slug===cat?'selected':''}>${esc(c.name)}</option>`).join('')}</select><select name="sort"><option value="latest" ${sort==='latest'?'selected':''}>সর্বশেষ</option><option value="popular" ${sort==='popular'?'selected':''}>জনপ্রিয়</option></select></form><div class="rh"><h2>${q?'ফলাফল: '+esc(q):'সব ভিডিও'}</h2></div>${pagedHTML()}`);
+  $('#ff').onchange=e=>{const n=new URLSearchParams();if(q)n.set('q',q);if(e.currentTarget.cat.value)n.set('cat',e.currentTarget.cat.value);n.set('sort',e.currentTarget.sort.value);go('/search?'+n)};
+  const c=S.cats.find(x=>x.slug===cat);
+  paged($('#view'),(a,b)=>{let r=pubQ(VC,{count:'exact'});if(q)r=r.ilike('title','%'+q.replace(/[%_\\]/g,m=>'\\'+m)+'%');if(c)r=r.eq('category_id',c.id);return (sort==='popular'?r.order('views',{ascending:false}):r.order('publish_at',{ascending:false})).range(a,b)});
+}
+function categories(){
+  setMeta('ক্যাটাগরি — '+S.st.name);
+  view(S.cats.length?`<div class="rh"><h2>ক্যাটাগরি</h2></div><div class="catgrid">${S.cats.map(c=>`<a class="cat" data-l href="/c/${esc(c.slug)}"><div class="t" style="${c.thumb_url?`background-image:url('${esc(c.thumb_url)}')`:''}"></div><b>${esc(c.name)}</b></a>`).join('')}</div>`:state('কোনো ক্যাটাগরি নেই','অ্যাডমিন ক্যাটাগরি যোগ করলে এখানে দেখা যাবে।'));
+}
+function catPage(slug){
+  const c=S.cats.find(x=>x.slug===slug);if(!c)return notFound();
+  setMeta(c.name+' — '+S.st.name,c.description);
+  view(`<div class="rh"><h2>${esc(c.name)}</h2></div><p class="meta">${esc(c.description||'')}</p>${pagedHTML()}`);
+  paged($('#view'),(a,b)=>pubQ(VC,{count:'exact'}).eq('category_id',c.id).order('publish_at',{ascending:false}).range(a,b));
+}
+async function historyPage(){
+  setMeta('হিস্ট্রি — '+S.st.name);view(skel(4));
+  const h=await getHist(48);
+  view(`<div class="rh"><h2>হিস্ট্রি</h2>${h.length?'<button class="btn sm d" id="ch">হিস্ট্রি মুছুন</button>':''}</div>${!S.user?'<p class="meta">লগইন করলে হিস্ট্রি সব ডিভাইসে সিঙ্ক হবে।</p>':''}${h.length?`<div class="grid">${h.map(x=>card(x.v,x.dur?Math.min(100,x.pos/x.dur*100):0)).join('')}</div>`:state('হিস্ট্রি খালি','ভিডিও দেখলে এখানে জমা হবে।')}`);
+  const b=$('#ch');if(b)b.onclick=async()=>{if(!await askConfirm('পুরো হিস্ট্রি মুছে ফেলবেন?'))return;if(S.user)await run(sb.from('watch_history').delete().eq('user_id',S.user.id));else lsSet('tbp_hist',{});historyPage()};
+}
+async function watchlist(){
+  setMeta('ওয়াচলিস্ট — '+S.st.name);view(skel(4));
+  let saved=[],later=[];
+  if(S.user){const r=await run(sb.from('watchlist').select('kind,videos('+VC+')'));r.data.forEach(x=>{if(x.videos)(x.kind==='saved'?saved:later).push(x.videos)})}
+  else{const w=lsGet('tbp_wl',{}),ids=[...(w.saved||[]),...(w.later||[])];if(ids.length){const r=await run(pubQ().in('id',ids));saved=r.data.filter(v=>(w.saved||[]).includes(v.id));later=r.data.filter(v=>(w.later||[]).includes(v.id))}}
+  view(`${!S.user?'<p class="meta">লগইন করলে ওয়াচলিস্ট সব ডিভাইসে সিঙ্ক হবে।</p>':''}${rowH('❤ সংরক্ষিত',saved)}${rowH('⏰ পরে দেখব',later)}${saved.length+later.length?'':state('ওয়াচলিস্ট খালি','ভিডিও পেজ থেকে সেভ করুন।')}`);
+}
+
+/* ---------- watch page + player ---------- */
+async function watch(slug){
+  view(`<div class="watch"><div><div class="sk"></div></div><div>${skel(3)}</div></div>`);
+  const {data:v}=await run(sb.from('videos').select(VC).eq('slug',slug).maybeSingle());
+  if(!v||(v.status!=='published'&&!S.admin))return notFound();
+  const rel=(await pubQ().neq('id',v.id).order('views',{ascending:false}).limit(8).match(v.category_id?{category_id:v.category_id}:{})).data||[];
+  const url=(CFG.SITE_URL||location.origin)+'/watch/'+v.slug;
+  setMeta(v.title+' — '+S.st.name,(v.description||'').slice(0,160),v.thumb_url,'/watch/'+v.slug);
+  ld({'@context':'https://schema.org','@type':'VideoObject',name:v.title,description:v.description||v.title,thumbnailUrl:v.thumb_url,uploadDate:v.publish_at,contentUrl:v.source_type==='mp4'?v.source_url:undefined,url});
+  view(`<div class="watch"><div>
+    <div class="player" id="player" style="background-image:url('${esc(v.thumb_url||'')}')"><button class="bigplay" aria-label="চালান">▶</button></div>
+    <div class="pbar"><select id="spd" aria-label="স্পিড">${[.5,.75,1,1.25,1.5,2].map(s=>`<option value="${s}" ${s===1?'selected':''}>${s}x</option>`).join('')}</select><select id="qual" hidden aria-label="কোয়ালিটি"></select><button class="btn sm" id="pip" hidden>PiP</button></div>
+    ${v.status!=='published'?`<p class="meta">⚠ প্রিভিউ — এই ভিডিও এখনো প্রকাশিত নয় (${esc(v.status)})</p>`:''}
+    <h1>${esc(v.title)}</h1><div class="meta">${nf(v.views)} ভিউ · ${dt(v.publish_at)}${v.categories?` · <a data-l href="/c/${esc(v.categories.slug)}" style="color:var(--ac)">${esc(v.categories.name)}</a>`:''}</div>
+    <div class="acts"><button class="btn" id="sh">↗ শেয়ার</button><button class="btn" id="cp">🔗 লিংক কপি</button><button class="btn" id="w1">❤ সেভ</button><button class="btn" id="w2">⏰ পরে দেখব</button></div>
+    ${v.description?`<div class="desc">${esc(v.description)}</div>`:''}</div>
+    <aside class="side"><h3>সম্পর্কিত ভিডিও</h3>${rel.length?rel.map(r=>card(r)).join(''):'<p class="meta">কোনো সম্পর্কিত ভিডিও নেই।</p>'}</aside></div>`);
+  $('#sh').onclick=async()=>{try{if(navigator.share)await navigator.share({title:v.title,url});else throw 0}catch{copy(url)}};
+  $('#cp').onclick=()=>copy(url);
+  for(const [id,k] of [['w1','saved'],['w2','later']]){const b=$('#'+id);wlHas(v.id,k).then(h=>b.classList.toggle('on',h)).catch(()=>{});b.onclick=async()=>{try{b.classList.toggle('on',await wlToggle(v.id,k))}catch{toast('সম্পন্ন করা যায়নি')}}}
+  mount(v,await getPos(v.id).catch(()=>0));
+}
+function copy(t){(navigator.clipboard?.writeText(t)||Promise.reject()).then(()=>toast('লিংক কপি হয়েছে')).catch(()=>{const a=el('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('লিংক কপি হয়েছে')}catch{}a.remove()})}
+function mount(v,resume){
+  const box=$('#player');let vid,hls,viewed=false,lastSave=0;
+  const perr=m=>{let e=$('.perr',box);if(!e){e=el('div','perr');box.appendChild(e)}e.innerHTML=`<p>${esc(m)}</p><button class="btn p">আবার চেষ্টা করুন</button>`;e.hidden=false;$('button',e).onclick=attach};
+  function attach(){
+    $('.perr',box)&&($('.perr',box).hidden=true);
+    if(hls){hls.destroy();hls=null}
+    const src=v.source_url||'';if(!/^https:\/\//i.test(src))return perr('ভিডিওর লিংক সঠিক নয় বা পাওয়া যায়নি।');
+    if(v.source_type==='hls'&&!vid.canPlayType('application/vnd.apple.mpegurl')){
+      loadScript(HLS_URL).then(()=>{
+        if(!window.Hls||!Hls.isSupported())return perr('এই ডিভাইসে HLS সমর্থিত নয়।');
+        hls=new Hls();hls.loadSource(src);hls.attachMedia(vid);
+        hls.on(Hls.Events.MANIFEST_PARSED,()=>{const q=$('#qual');q.innerHTML='<option value="-1">অটো</option>'+hls.levels.map((l,i)=>`<option value="${i}">${l.height||'?'}p</option>`).join('');q.hidden=hls.levels.length<2;q.onchange=()=>hls.currentLevel=+q.value;vid.play().catch(()=>{})});
+        hls.on(Hls.Events.ERROR,(e,d)=>{if(d.fatal)perr('স্ট্রিম চালানো যায়নি।')});
+      }).catch(()=>perr('প্লেয়ার লোড হয়নি। ইন্টারনেট পরীক্ষা করুন।'));
+    }else{vid.src=src;vid.play().catch(()=>{})}
+  }
+  $('.bigplay',box).onclick=()=>{
+    box.innerHTML='<video playsinline controls controlsList="nodownload" preload="metadata"></video>';vid=$('video',box);vid.poster=v.thumb_url||'';
+    vid.addEventListener('loadedmetadata',()=>{if(resume>5&&resume<vid.duration-10)vid.currentTime=resume},{once:true});
+    vid.addEventListener('playing',()=>{if(!viewed){viewed=true;sb.rpc('record_view',{p_video:v.id,p_key:vkey()}).then(()=>{})}});
+    vid.addEventListener('timeupdate',()=>{const n=Date.now();if(n-lastSave>10000){lastSave=n;saveProg(v,vid.currentTime,vid.duration)}});
+    ['pause','ended'].forEach(ev=>vid.addEventListener(ev,()=>saveProg(v,vid.ended?0:vid.currentTime,vid.duration)));
+    vid.addEventListener('error',()=>perr('ভিডিও চালানো যায়নি। সংযোগ বা লিংক পরীক্ষা করুন।'));
+    vid.addEventListener('stalled',()=>{});
+    $('#spd').onchange=e=>vid.playbackRate=+e.target.value;
+    if(document.pictureInPictureEnabled){const p=$('#pip');p.hidden=false;p.onclick=()=>document.pictureInPictureElement?document.exitPictureInPicture():vid.requestPictureInPicture().catch(()=>toast('PiP সমর্থিত নয়'))}
+    attach();
+  };
+  const hide=()=>{if(vid&&!vid.paused)saveProg(v,vid.currentTime,vid.duration)};
+  addEventListener('pagehide',hide);
+  cleanup=()=>{removeEventListener('pagehide',hide);hide();if(hls)hls.destroy()};
+}
+
+/* ---------- static pages (নমুনা টেক্সট — নিজের তথ্য দিয়ে বদলান) ---------- */
+const PAGES={about:['আমাদের সম্পর্কে','এটি একটি অ্যাডমিন-নিয়ন্ত্রিত ভিডিও প্ল্যাটফর্ম। (নমুনা টেক্সট — নিজের তথ্য লিখুন।)'],contact:['যোগাযোগ',''],privacy:['প্রাইভেসি পলিসি','আমরা কোন তথ্য সংগ্রহ করি, কীভাবে ব্যবহার করি ও সংরক্ষণ করি তা এখানে লিখুন। (নমুনা — আইনি পরামর্শ নিয়ে চূড়ান্ত করুন।)'],terms:['শর্তাবলী','সাইট ব্যবহারের শর্ত এখানে লিখুন। (নমুনা টেক্সট)'],copyright:['কপিরাইট ও কনটেন্ট পলিসি','শুধু নিজের বা বৈধ অনুমতিপ্রাপ্ত ভিডিও প্রকাশ করা হয়। কপিরাইট অভিযোগ জানাতে যোগাযোগ করুন। (নমুনা টেক্সট)']};
+function staticPage(k){const [t,b]=PAGES[k];setMeta(t+' — '+S.st.name);view(`<div class="prose"><h1>${t}</h1><p>${k==='contact'?(S.st.contact?'ইমেইল/ফোন: '+esc(S.st.contact):'যোগাযোগের তথ্য অ্যাডমিন প্যানেল → সাইট সেটিংস থেকে যোগ করুন।'):esc(b)}</p></div>`)}
+
+/* ---------- auth ---------- */
+async function refreshAuth(){
+  const {data:{session}}=await sb.auth.getSession();S.user=session?.user||null;S.admin=false;
+  if(S.user){try{const r=await sb.rpc('is_admin');S.admin=r.data===true}catch{}}
+}
+function login(){
+  setMeta('লগইন — '+S.st.name);
+  if(S.user)return go(S.admin?'/admin':'/',true);
+  view(`<div class="prose" style="margin:auto;max-width:420px"><h1>লগইন</h1><p class="meta">লগইন করলে হিস্ট্রি ও ওয়াচলিস্ট সব ডিভাইসে সিঙ্ক হবে।</p>
+  <div class="fg"><button class="btn p" id="gl">Google দিয়ে লগইন</button><p class="meta" style="margin:4px 0">অথবা ইমেইলে লগইন লিংক নিন (Android অ্যাপের ভেতরে এটি ব্যবহার করুন):</p>
+  <form class="fg" id="ef"><input type="email" name="e" required placeholder="আপনার ইমেইল"><button class="btn">লগইন লিংক পাঠান</button></form><p class="fmsg" id="lm"></p></div></div>`);
+  $('#gl').onclick=()=>sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/login'}});
+  $('#ef').onsubmit=async e=>{e.preventDefault();const m=$('#lm');m.className='fmsg';m.textContent='পাঠানো হচ্ছে…';const r=await sb.auth.signInWithOtp({email:e.target.e.value.trim(),options:{emailRedirectTo:location.origin+'/login'}});m.className='fmsg '+(r.error?'e':'o');m.textContent=r.error?'পাঠানো যায়নি: '+r.error.message:'ইমেইল পরীক্ষা করুন — লিংকে ক্লিক করলে লগইন হবে।'};
+}
+
+/* ================= ADMIN ================= */
+const log=(action,detail)=>S.user&&sb.from('admin_logs').insert({admin_email:S.user.email,action,detail:detail||{}}).then(()=>{});
+async function admin(tab){
+  setMeta('অ্যাডমিন — '+S.st.name);
+  if(!S.user)return go('/login',true);
+  if(!S.admin)return view(state('Access Denied','এই পেজ দেখার অনুমতি আপনার নেই।','<a data-l class="btn p" href="/">হোমে ফিরুন</a>'));
+  const T=[['','ড্যাশবোর্ড'],['videos','ভিডিও'],['categories','ক্যাটাগরি'],['home','হোমপেজ'],['settings','সাইট সেটিংস'],['logs','লগ']];
+  view(`<div class="adm"><aside>${T.map(([k,t])=>`<a data-l href="/admin${k?'/'+k:''}" class="${k===tab?'on':''}">${t}</a>`).join('')}</aside><section id="ab">${skel(3)}</section></div>`);
+  try{await({'':aDash,videos:aVideos,categories:aCats,home:aHome,settings:aSettings,logs:aLogs}[tab]||aDash)()}catch(e){console.error(e);$('#ab').innerHTML=state('ত্রুটি',esc(e.message||'লোড হয়নি'),'<button class="btn p" id="rt">আবার চেষ্টা</button>');$('#rt').onclick=route}
+}
+async function aDash(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const cnt=(t,f)=>{let q=sb.from(t).select('*',{count:'exact',head:true});return (f?f(q):q).then(r=>r.count||0)};
+  const [tv,tc,td,all,pop,recent,proc,logs]=await Promise.all([cnt('videos'),cnt('categories'),cnt('video_views',q=>q.gte('created_at',today.toISOString())),
+    run(sb.from('videos').select('views')),run(sb.from('videos').select('title,slug,views').order('views',{ascending:false}).limit(5)),
+    run(sb.from('videos').select('title,slug,status,publish_at').order('created_at',{ascending:false}).limit(5)),
+    run(sb.from('videos').select('title,slug,status').in('status',['processing','failed'])),run(sb.from('admin_logs').select('*').order('created_at',{ascending:false}).limit(6))]);
+  const tot=all.data.reduce((a,b)=>a+Number(b.views||0),0),L=(r,f)=>r.data.length?`<table>${r.data.map(f).join('')}</table>`:'<p class="meta">কিছু নেই</p>';
+  $('#ab').innerHTML=`<div class="stats">${[['মোট ভিডিও',tv],['ক্যাটাগরি',tc],['মোট ভিউ',tot],['আজকের ভিউ',td]].map(([t,n])=>`<div class="stat"><b>${nf(n)}</b><span>${t}</span></div>`).join('')}</div>
+  <div class="panel"><h3>জনপ্রিয় ভিডিও (ভিউ অনুযায়ী)</h3>${L(pop,v=>`<tr><td><a data-l href="/watch/${esc(v.slug)}">${esc(v.title)}</a></td><td>${nf(v.views)}</td></tr>`)}</div>
+  <div class="panel"><h3>সম্প্রতি যোগ করা</h3>${L(recent,v=>`<tr><td><a data-l href="/watch/${esc(v.slug)}">${esc(v.title)}</a></td><td><span class="tag ${v.status}">${v.status}</span></td></tr>`)}</div>
+  <div class="panel"><h3>প্রসেসিং / ব্যর্থ</h3>${L(proc,v=>`<tr><td>${esc(v.title)}</td><td><span class="tag ${v.status}">${v.status}</span></td></tr>`)}</div>
+  <div class="panel"><h3>সাম্প্রতিক অ্যাডমিন কার্যক্রম</h3>${L(logs,l=>`<tr><td>${esc(l.action)}</td><td>${dt(l.created_at)}</td></tr>`)}</div>
+  <p class="meta">দ্রষ্টব্য: Watch Time ও ট্রাফিক বিশ্লেষণ এই কোর ভার্সনে নেই — README দেখুন।</p>`;
+}
+async function aVideos(){
+  const r=await run(sb.from('videos').select(VC).order('created_at',{ascending:false}).limit(200));
+  $('#ab').innerHTML=`<div class="rh"><h2>ভিডিও</h2><button class="btn p" id="nv">+ নতুন ভিডিও</button></div><div class="panel"><table><tr><th>শিরোনাম</th><th>স্ট্যাটাস</th><th>ভিউ</th><th></th></tr>${r.data.map(v=>`<tr><td>${esc(v.title)}</td><td><span class="tag ${v.status}">${v.status}</span></td><td>${nf(v.views)}</td><td><a class="btn sm" data-l href="/watch/${esc(v.slug)}">প্রিভিউ</a><button class="btn sm" data-e="${v.id}">এডিট</button><button class="btn sm" data-p="${v.id}">${v.status==='published'?'আনপাবলিশ':'পাবলিশ'}</button><button class="btn sm d" data-d="${v.id}">ডিলিট</button></td></tr>`).join('')||'<tr><td colspan="4">কোনো ভিডিও নেই</td></tr>'}</table></div>`;
+  const by=id=>r.data.find(v=>v.id===id);
+  $('#nv').onclick=()=>videoForm();
+  $$('[data-e]').forEach(b=>b.onclick=()=>videoForm(by(b.dataset.e)));
+  $$('[data-p]').forEach(b=>b.onclick=async()=>{const v=by(b.dataset.p),to=v.status==='published'?'draft':'published';
+    if(to==='published'&&!v.source_url)return toast('সোর্স ছাড়া পাবলিশ করা যায় না');
+    if(!await askConfirm(`"${v.title}" ${to==='published'?'পাবলিশ':'আনপাবলিশ'} করবেন?`))return;
+    try{await run(sb.from('videos').update({status:to}).eq('id',v.id));log(to,{id:v.id});aVideos()}catch(e){toast(e.message)}});
+  $$('[data-d]').forEach(b=>b.onclick=async()=>{const v=by(b.dataset.d);if(!await askConfirm(`"${v.title}" স্থায়ীভাবে ডিলিট করবেন? ফাইলও মুছে যাবে।`))return;
+    try{await run(sb.from('videos').delete().eq('id',v.id));if(v.storage_path)await sb.storage.from('videos').remove([v.storage_path]);if(v.thumb_path)await sb.storage.from('thumbs').remove([v.thumb_path]);log('delete_video',{id:v.id,title:v.title});aVideos()}catch(e){toast('ডিলিট ব্যর্থ: '+e.message)}});
+}
+async function upload(bucket,path,file,onp){
+  const {data:{session}}=await sb.auth.getSession();if(!session)throw new Error('সেশন শেষ — আবার লগইন করুন');
+  return new Promise((ok,no)=>{const x=new XMLHttpRequest();x.open('POST',`${CFG.SUPABASE_URL}/storage/v1/object/${bucket}/${path}`);
+    x.setRequestHeader('Authorization','Bearer '+session.access_token);x.setRequestHeader('apikey',CFG.SUPABASE_ANON_KEY);x.setRequestHeader('Content-Type',file.type);
+    x.upload.onprogress=e=>e.lengthComputable&&onp&&onp(e.loaded/e.total);
+    x.onload=()=>x.status<300?ok(`${CFG.SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`):no(new Error('আপলোড ব্যর্থ ('+x.status+')'));
+    x.onerror=()=>no(new Error('নেটওয়ার্ক সমস্যা — আবার চেষ্টা করুন'));x.send(file)});
+}
+function videoForm(v){
+  const e=!!v;v=v||{};
+  const m=modal(`<h3>${e?'ভিডিও এডিট':'নতুন ভিডিও'}</h3><form class="fg" id="vf">
+  <div><label class="l">শিরোনাম *</label><input type="text" name="title" maxlength="200" value="${esc(v.title)}"></div>
+  <div class="fr2"><div><label class="l">স্লাগ (ফাঁকা রাখলে অটো)</label><input type="text" name="slug" value="${esc(v.slug)}"></div>
+  <div><label class="l">ক্যাটাগরি</label><select name="cat"><option value="">— নেই —</option>${S.cats.map(c=>`<option value="${c.id}" ${c.id===v.category_id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div></div>
+  <div><label class="l">বিবরণ</label><textarea name="desc" rows="4">${esc(v.description)}</textarea></div>
+  <div><label class="l">ট্যাগ (কমা দিয়ে)</label><input type="text" name="tags" value="${esc((v.tags||[]).join(', '))}"></div>
+  <div class="fr2"><div><label class="l">স্ট্যাটাস</label><select name="status">${['draft','processing','published','failed'].map(s=>`<option ${s===(v.status||'draft')?'selected':''}>${s}</option>`).join('')}</select></div>
+  <div><label class="l">পাবলিশ সময়</label><input type="datetime-local" name="at" value="${v.publish_at?new Date(new Date(v.publish_at)-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,16):''}"></div></div>
+  <div class="panel" style="margin:0"><label class="l">ভিডিও সোর্স — ফাইল আপলোড (MP4/WebM, সর্বোচ্চ ${CFG.MAX_UPLOAD_MB}MB)</label><input type="file" name="file" accept="video/mp4,video/webm">
+  <label class="l" style="margin-top:8px">অথবা HTTPS লিংক (MP4 / HLS .m3u8)</label><div class="fr2"><input type="url" name="url" placeholder="https://…" value="${esc(v.source_url)}"><select name="stype"><option value="mp4" ${v.source_type!=='hls'?'selected':''}>MP4</option><option value="hls" ${v.source_type==='hls'?'selected':''}>HLS</option></select></div></div>
+  <div class="panel" style="margin:0"><label class="l">থাম্বনেইল ফাইল (JPG/PNG/WebP)</label><input type="file" name="thumbf" accept="image/jpeg,image/png,image/webp"><label class="l" style="margin-top:8px">অথবা থাম্বনেইল লিংক</label><input type="url" name="thumb" value="${esc(v.thumb_url)}"></div>
+  <label><input type="checkbox" name="feat" ${v.featured?'checked':''}> ফিচার্ড (হোমপেজ ব্যানার)</label><label><input type="checkbox" name="trend" ${v.trending?'checked':''}> ট্রেন্ডিং</label>
+  <div class="prog" id="pr" hidden><i></i></div><p class="fmsg" id="fm"></p>
+  <div class="acts"><button class="btn p" id="sv">সংরক্ষণ</button><button type="button" class="btn" id="cx">বাতিল</button></div></form>`);
+  $('#cx',m).onclick=()=>m.remove();
+  $('#vf',m).onsubmit=async ev=>{
+    ev.preventDefault();const f=ev.target,g=n=>f.elements[n],fm=$('#fm',m),pr=$('#pr',m),sv=$('#sv',m);
+    const msg=(t,c)=>{fm.className='fmsg '+(c||'');fm.textContent=t};
+    const title=g('title').value.trim();if(!title)return msg('শিরোনাম দিন','e');
+    const file=g('file').files[0],tf=g('thumbf').files[0];
+    if(file){if(!['video/mp4','video/webm'].includes(file.type))return msg('শুধু MP4 বা WebM ফাইল দেওয়া যাবে','e');if(file.size>CFG.MAX_UPLOAD_MB*1048576)return msg(`ফাইল ${CFG.MAX_UPLOAD_MB}MB-এর বেশি। বড় ভিডিওর জন্য Cloudflare Stream/HLS লিংক ব্যবহার করুন।`,'e')}
+    if(tf&&(!/^image\/(jpeg|png|webp)$/.test(tf.type)||tf.size>5242880))return msg('থাম্বনেইল JPG/PNG/WebP এবং ৫MB-এর মধ্যে হতে হবে','e');
+    const url=g('url').value.trim();if(url&&!/^https:\/\//i.test(url))return msg('লিংক অবশ্যই https:// দিয়ে শুরু হতে হবে','e');
+    if(g('status').value==='published'&&!file&&!url)return msg('সোর্স ছাড়া পাবলিশ করা যাবে না','e');
+    sv.disabled=true;let oldV=null,oldT=null;
+    try{
+      let source_url=url,storage_path=v.storage_path||null,thumb_url=g('thumb').value.trim(),thumb_path=v.thumb_path||null,stype=g('stype').value;
+      if(file){msg('ভিডিও আপলোড হচ্ছে…');pr.hidden=false;const path=Date.now()+'-'+rnd()+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+        source_url=await upload('videos',path,file,p=>$('i',pr).style.width=(p*100)+'%');oldV=storage_path;storage_path=path;stype='mp4'}
+      if(tf){msg('থাম্বনেইল আপলোড হচ্ছে…');const path=Date.now()+'-'+rnd()+'-'+tf.name.replace(/[^a-zA-Z0-9._-]/g,'_');thumb_url=await upload('thumbs',path,tf);oldT=thumb_path;thumb_path=path}
+      const row={title,slug:g('slug').value.trim()||(slugify(title)||'video')+'-'+rnd(),description:g('desc').value,category_id:g('cat').value||null,tags:g('tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+        status:g('status').value,publish_at:g('at').value?new Date(g('at').value).toISOString():new Date().toISOString(),source_url,source_type:stype,storage_path,thumb_url,thumb_path,featured:g('feat').checked,trending:g('trend').checked};
+      msg('সংরক্ষণ হচ্ছে…');
+      await run(e?sb.from('videos').update(row).eq('id',v.id):sb.from('videos').insert(row));
+      if(oldV)sb.storage.from('videos').remove([oldV]);if(oldT)sb.storage.from('thumbs').remove([oldT]);
+      log(e?'edit_video':'create_video',{title});m.remove();toast('সংরক্ষিত হয়েছে');aVideos();
+    }catch(err){msg((err.message||'ব্যর্থ')+' — আবার চেষ্টা করুন','e');sv.disabled=false}
+  };
+}
+async function loadCats(){const r=await sb.from('categories').select('*').order('sort_order').order('name');S.cats=r.data||[]}
+async function aCats(){
+  await loadCats();
+  $('#ab').innerHTML=`<div class="rh"><h2>ক্যাটাগরি</h2><button class="btn p" id="nc">+ নতুন</button></div><div class="panel"><table><tr><th>নাম</th><th>স্লাগ</th><th>ক্রম</th><th></th></tr>${S.cats.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.slug)}</td><td>${c.sort_order}</td><td><button class="btn sm" data-e="${c.id}">এডিট</button><button class="btn sm d" data-d="${c.id}">ডিলিট</button></td></tr>`).join('')||'<tr><td colspan="4">কোনো ক্যাটাগরি নেই</td></tr>'}</table></div>`;
+  const form=c=>{c=c||{};const m=modal(`<h3>${c.id?'ক্যাটাগরি এডিট':'নতুন ক্যাটাগরি'}</h3><form class="fg"><input type="text" name="name" placeholder="নাম *" value="${esc(c.name)}"><div class="fr2"><input type="text" name="slug" placeholder="slug (ইংরেজি, ফাঁকা = অটো)" value="${esc(c.slug)}"><input type="number" name="ord" placeholder="ক্রম" value="${c.sort_order||0}"></div><textarea name="desc" rows="3" placeholder="বিবরণ">${esc(c.description)}</textarea><input type="url" name="thumb" placeholder="থাম্বনেইল লিংক (https://)" value="${esc(c.thumb_url)}"><p class="fmsg"></p><div class="acts"><button class="btn p">সংরক্ষণ</button><button type="button" class="btn" id="cx">বাতিল</button></div></form>`);
+    $('#cx',m).onclick=()=>m.remove();
+    $('form',m).onsubmit=async ev=>{ev.preventDefault();const f=ev.target;if(!f.name.value.trim())return $('.fmsg',m).textContent='নাম দিন';
+      const row={name:f.name.value.trim(),slug:f.slug.value.trim()||(slugify(f.name.value)||'cat')+'-'+rnd(),sort_order:+f.ord.value||0,description:f.desc.value,thumb_url:f.thumb.value.trim()};
+      try{await run(c.id?sb.from('categories').update(row).eq('id',c.id):sb.from('categories').insert(row));log('save_category',{name:row.name});m.remove();aCats()}catch(er){$('.fmsg',m).className='fmsg e';$('.fmsg',m).textContent=er.message}}};
+  $('#nc').onclick=()=>form();
+  $$('[data-e]').forEach(b=>b.onclick=()=>form(S.cats.find(c=>c.id===b.dataset.e)));
+  $$('[data-d]').forEach(b=>b.onclick=async()=>{const c=S.cats.find(x=>x.id===b.dataset.d);const n=(await sb.from('videos').select('*',{count:'exact',head:true}).eq('category_id',c.id)).count||0;
+    if(n)return toast(`এই ক্যাটাগরিতে ${nf(n)}টি ভিডিও আছে। আগে ভিডিওগুলো অন্য ক্যাটাগরিতে সরান।`);
+    if(!await askConfirm(`"${c.name}" ডিলিট করবেন?`))return;try{await run(sb.from('categories').delete().eq('id',c.id));log('delete_category',{name:c.name});aCats()}catch(e){toast(e.message)}});
+}
+async function aHome(){
+  await loadCats();const sel=S.home.cats||[];
+  $('#ab').innerHTML=`<div class="rh"><h2>হোমপেজ ম্যানেজমেন্ট</h2></div><div class="panel"><h3>হোমপেজে কোন ক্যাটাগরি দেখাবে (সর্বোচ্চ ৪টি)</h3><form id="hf" class="fg">${S.cats.map(c=>`<label><input type="checkbox" value="${esc(c.slug)}" ${sel.includes(c.slug)?'checked':''}> ${esc(c.name)}</label>`).join('')||'<p class="meta">আগে ক্যাটাগরি যোগ করুন।</p>'}<button class="btn p">সংরক্ষণ</button></form><p class="meta">সেকশনের ক্রম: ক্যাটাগরির "ক্রম" সংখ্যা অনুযায়ী। ফিচার্ড ও ট্রেন্ডিং ভিডিও নির্বাচন করতে ভিডিও এডিট ফর্মের টিক বক্স ব্যবহার করুন।</p></div>`;
+  $('#hf').onsubmit=async e=>{e.preventDefault();const cats=$$('input:checked',e.target).map(i=>i.value).slice(0,4);try{await run(sb.from('site_settings').upsert({key:'home',value:{cats}}));S.home={cats};log('update_home',{cats});toast('সংরক্ষিত')}catch(er){toast(er.message)}};
+}
+async function aSettings(){
+  const s=S.st;
+  $('#ab').innerHTML=`<div class="rh"><h2>সাইট সেটিংস</h2></div><form class="panel fg" id="sf2"><input type="text" name="name" placeholder="সাইটের নাম" value="${esc(s.name)}"><textarea name="desc" rows="2" placeholder="সাইটের বিবরণ (SEO)">${esc(s.desc)}</textarea><input type="text" name="contact" placeholder="যোগাযোগ (ইমেইল/ফোন)" value="${esc(s.contact)}"><input type="url" name="logo" placeholder="লোগো লিংক (https://)" value="${esc(s.logo)}"><input type="url" name="favicon" placeholder="ফেভিকন লিংক (https://)" value="${esc(s.favicon)}"><select name="theme"><option value="dark" ${s.theme==='dark'?'selected':''}>ডিফল্ট: ডার্ক</option><option value="light" ${s.theme==='light'?'selected':''}>ডিফল্ট: লাইট</option></select><button class="btn p">সংরক্ষণ</button></form>`;
+  $('#sf2').onsubmit=async e=>{e.preventDefault();const f=e.target,v={name:f.name.value.trim()||'Streamly',desc:f.desc.value,contact:f.contact.value,logo:f.logo.value.trim(),favicon:f.favicon.value.trim(),theme:f.theme.value};
+    try{await run(sb.from('site_settings').upsert({key:'general',value:v}));S.st=v;log('update_settings');toast('সংরক্ষিত — রিলোড করলে সব জায়গায় দেখা যাবে')}catch(er){toast(er.message)}};
+}
+async function aLogs(){
+  const r=await run(sb.from('admin_logs').select('*').order('created_at',{ascending:false}).limit(100));
+  $('#ab').innerHTML=`<div class="rh"><h2>অ্যাডমিন লগ</h2></div><div class="panel"><table>${r.data.map(l=>`<tr><td>${esc(l.action)}</td><td>${esc(l.admin_email)}</td><td>${new Date(l.created_at).toLocaleString('bn-BD')}</td></tr>`).join('')||'<tr><td>কোনো লগ নেই</td></tr>'}</table></div>`;
+}
+
+/* ================= BOOT ================= */
+(async function(){
+  document.documentElement.dataset.theme=lsGet('tbp_theme','dark');
+  if(!CFG.SUPABASE_URL||!CFG.SUPABASE_ANON_KEY){$('#app').innerHTML='<div class="wrap"><div class="state"><h2>সেটআপ বাকি</h2><p>index.html-এর উপরে CFG-তে SUPABASE_URL ও SUPABASE_ANON_KEY বসান। README.md দেখুন।</p></div></div>';return}
+  sb=supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_ANON_KEY,{auth:{persistSession:true,detectSessionInUrl:true,autoRefreshToken:true}});
+  try{
+    const [s,c]=await Promise.all([sb.from('site_settings').select('*'),sb.from('categories').select('*').order('sort_order').order('name')]);
+    (s.data||[]).forEach(r=>{if(r.key==='general')S.st={...S.st,...r.value};if(r.key==='home')S.home=r.value});S.cats=c.data||[];
+    if(!lsGet('tbp_theme',null))document.documentElement.dataset.theme=S.st.theme||'dark';
+    if(S.st.favicon)$('#fav').href=S.st.favicon;
+  }catch(e){console.error(e)}
+  await refreshAuth();
+  sb.auth.onAuthStateChange(async(ev)=>{if(ev==='SIGNED_IN'||ev==='SIGNED_OUT'||ev==='TOKEN_REFRESHED'||ev==='USER_UPDATED'){const was=S.admin;await refreshAuth();if($('#view')){navAuth();if(S.admin!==was||ev==='SIGNED_OUT')route()}}});
+  addEventListener('online',()=>toast('ইন্টারনেট ফিরেছে'));addEventListener('offline',()=>toast('ইন্টারনেট সংযোগ নেই'));
+  route();
+})();
+</script>
+</body>
+</html>
